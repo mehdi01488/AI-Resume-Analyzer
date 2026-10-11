@@ -1,0 +1,4 @@
+venv/
+uploads/
+_pycache_/
+resume_analyzer.db

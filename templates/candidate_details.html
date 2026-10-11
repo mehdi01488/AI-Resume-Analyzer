@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Candidate Profile - AI Resume Analyzer</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            color: #172033;
+
+        }
+
+
+        /* Navbar */
+
+        nav {
+
+            background: #111827;
+
+            padding: 18px 40px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        nav h2 {
+
+            color: white;
+
+            font-size: 22px;
+
+        }
+
+
+        nav a {
+
+            color: #dbeafe;
+
+            text-decoration: none;
+
+            margin-left: 25px;
+
+            font-size: 15px;
+
+        }
+
+
+        nav a:hover {
+
+            color: #60a5fa;
+
+        }
+
+
+        /* Container */
+
+        .container {
+
+            width: 94%;
+
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+        }
+
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+        }
+
+
+        .header {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .header h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .header p {
+
+            color: #64748b;
+
+        }
+
+
+        /* Score Cards */
+
+        .scores {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .score-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.08);
+
+        }
+
+
+        .score-card h3 {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .score-number {
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+
+        }
+
+
+        .rank {
+
+            color: #d97706;
+
+        }
+
+
+        /* Sections */
+
+        .section {
+
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .section h2 {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .career {
+
+            display: inline-block;
+
+            background: #ecfdf5;
+
+            color: #059669;
+
+            padding: 10px 16px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* Skills */
+
+        .skills {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+        }
+
+
+        .skill {
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            padding: 9px 13px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        .missing {
+
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            padding: 9px 13px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+        .empty {
+
+            color: #64748b;
+
+        }
+
+
+        /* Footer */
+
+        footer {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .scores {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 18px;
+
+            }
+
+
+            nav a {
+
+                margin: 0 8px;
+
+            }
+
+
+            .scores {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<nav>
+
+    <h2>🤖 AI Resume Analyzer</h2>
+
+    <div>
+
+        <a href="/">Home</a>
+
+        <a href="/history">History</a>
+
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="/ranking">🏆 Ranking</a>
+
+        <a href="/admin">Admin</a>
+
+    </div>
+
+</nav>
+
+
+
+<div class="container">
+
+
+    <a
+        href="/admin"
+        class="back"
+    >
+
+        ← Back to Admin Panel
+
+    </a>
+
+
+
+    <!-- Candidate Header -->
+
+    <div class="header">
+
+        <h1>
+            👤 Candidate Profile
+        </h1>
+
+        <p>
+            Resume:
+            <strong>
+                {{ resume_name }}
+            </strong>
+        </p>
+
+        <p>
+            Analysis Date:
+            {{ analysis_date }}
+        </p>
+
+    </div>
+
+
+
+    <!-- Score Cards -->
+
+    <div class="scores">
+
+
+        <div class="score-card">
+
+            <h3>
+                🤖 AI Match Score
+            </h3>
+
+            <div class="score-number">
+
+                {{ match_score }}%
+
+            </div>
+
+        </div>
+
+
+
+        <div class="score-card">
+
+            <h3>
+                🎯 Overall Score
+            </h3>
+
+            <div class="score-number">
+
+                {{ overall_score }}%
+
+            </div>
+
+        </div>
+
+
+
+        <div class="score-card">
+
+            <h3>
+                📉 Skill Gap
+            </h3>
+
+            <div class="score-number">
+
+                {{ skill_gap }}%
+
+            </div>
+
+        </div>
+
+
+
+        <div class="score-card">
+
+            <h3>
+                🏆 Candidate Rank
+            </h3>
+
+            <div class="score-number rank">
+
+                #{{ candidate_rank }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- Career -->
+
+    <div class="section">
+
+        <h2>
+            💼 Recommended Career
+        </h2>
+
+        <span class="career">
+
+            {{ career }}
+
+        </span>
+
+    </div>
+
+
+
+    <!-- Matched Skills -->
+
+    <div class="section">
+
+        <h2>
+            ✅ Matched Skills
+        </h2>
+
+
+        {% if matched_skills %}
+
+            <div class="skills">
+
+                {% for skill in matched_skills.split(", ") %}
+
+                    <span class="skill">
+
+                        {{ skill }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="empty">
+                No matched skills found.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- Missing Skills -->
+
+    <div class="section">
+
+        <h2>
+            ⚠️ Missing Skills
+        </h2>
+
+
+        {% if missing_skills %}
+
+            <div class="skills">
+
+                {% for skill in missing_skills.split(", ") %}
+
+                    <span class="missing">
+
+                        {{ skill }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="empty">
+                No major missing skills.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+
+</div>
+
+
+
+<footer>
+
+    AI Resume Screening & Job Matching System
+
+    <br>
+
+    Candidate Profile Module
+
+</footer>
+
+
+</body>
+
+</html>
