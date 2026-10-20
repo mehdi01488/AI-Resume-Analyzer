@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect
 from pypdf import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -58,10 +57,14 @@ def ensure_database():
 ensure_database()
 
 
-def save_analysis(resume_name, match_score, skill_gap,
-                  career_recommendation, matched_skills,
-                  missing_skills):
-
+def save_analysis(
+    resume_name,
+    match_score,
+    skill_gap,
+    career_recommendation,
+    matched_skills,
+    missing_skills
+):
     connection = get_connection()
 
     connection.execute("""
@@ -142,7 +145,9 @@ CAREER_PROFILES = {
             "machine learning", "scikit-learn", "sklearn",
             "data science", "matplotlib", "deep learning"
         ],
-        "education": ["data science", "statistics", "mathematics"],
+        "education": [
+            "data science", "statistics", "mathematics"
+        ],
         "projects": [
             "Customer Churn Prediction Model",
             "Exploratory Data Analysis and Statistical Report",
@@ -216,7 +221,7 @@ CAREER_PROFILES = {
         ]
     },
 
-    "Cybersecurity Analyst": {
+        "Cybersecurity Analyst": {
         "skills": [
             "cybersecurity", "network security", "linux",
             "penetration testing", "siem", "incident response",
@@ -305,7 +310,9 @@ CAREER_PROFILES = {
             "prototyping", "user research", "usability testing",
             "adobe xd", "graphic design"
         ],
-        "education": ["design", "graphic design", "interaction design"],
+        "education": [
+            "design", "graphic design", "interaction design"
+        ],
         "projects": [
             "Mobile App Wireframes and Interactive Prototype",
             "Website Usability Review and Redesign",
@@ -413,46 +420,182 @@ CAREER_PROFILES = {
             "sql", "excel", "documentation", "business requirements"
         ],
         "education": [
-            "business administration", "management", "information systems"
+            "business administration", "business analytics",
+            "computer science", "information systems"
         ],
         "projects": [
-            "Business Requirements Document for an App",
-            "Current and Future Process Mapping",
-            "Requirements and KPI Tracking Dashboard"
+            "Business Requirements Document",
+            "Process Improvement Case Study",
+            "Business KPI Dashboard"
         ],
         "roadmap": [
-            "Practice requirements gathering and process analysis.",
-            "Create user stories, process diagrams and business documents.",
-            "Explore senior business analysis or product roles."
+            "Learn requirements gathering and process documentation.",
+            "Practice user stories, process maps and stakeholder communication.",
+            "Build business analysis case studies and KPI reports."
         ]
     },
 
     "HR / Recruitment Specialist": {
         "skills": [
             "human resources", "recruitment", "talent acquisition",
-            "interviewing", "payroll", "employee relations",
-            "onboarding", "hr analytics"
+            "interviewing", "employee relations", "hr management",
+            "payroll", "onboarding"
         ],
         "education": [
-            "human resources", "hr management", "organizational psychology"
+            "human resources", "business administration", "management"
         ],
         "projects": [
-            "Recruitment Pipeline Tracker",
-            "Employee Onboarding Plan",
-            "Anonymized HR Metrics Dashboard"
+            "Recruitment Tracking Dashboard",
+            "Employee Onboarding Checklist",
+            "Candidate Screening Workflow"
         ],
         "roadmap": [
-            "Learn recruitment workflows and HR documentation.",
-            "Practice interviewing, onboarding and workforce reporting.",
-            "Explore talent acquisition or HR business partnering."
+            "Learn recruitment processes and HR documentation.",
+            "Practice candidate tracking and interview coordination.",
+            "Explore talent acquisition or HR operations."
         ]
-    }
+    },
+
+    
 }
 
 
 # =========================================================
 # CAREER MATCHING
 # =========================================================
+
+def recommend_careers(resume_text):
+    text = resume_text.lower()
+
+    education_keywords = {
+        "Data Analyst": ["data analytics", "data analysis", "statistics"],
+        "BI Analyst": ["business intelligence", "data analytics"],
+        "Data Scientist": ["data science", "statistics", "mathematics"],
+        "Machine Learning Engineer": ["artificial intelligence", "machine learning"],
+        "Software Developer": ["computer science", "software engineering", "computer engineering"],
+        "Web Developer": ["web development", "html", "css", "javascript"],
+        "Cybersecurity Analyst": ["cybersecurity", "information security"],
+        "Network Administrator": ["networking", "computer networks"],
+        "Accountant / Finance Analyst": ["accounting", "finance", "commerce", "acca"],
+        "Digital Marketing Specialist": ["digital marketing", "marketing", "seo"],
+        "UI/UX Designer": ["ui design", "ux design", "graphic design", "figma"],
+        "Teacher / Educator": ["education", "b.ed", "m.ed", "teacher training"],
+        "Healthcare Professional": [
+            "medicine", "mbbs", "nursing", "pharmacy",
+            "physiotherapy", "public health", "health sciences"
+        ],
+        "Laboratory Technician": [
+            "medical laboratory technology", "laboratory science",
+            "biotechnology", "clinical laboratory"
+        ],
+        "Engineer": [
+            "mechanical engineering", "electrical engineering",
+            "civil engineering", "chemical engineering"
+        ],
+        "Business Analyst": [
+            "business administration", "management",
+            "business analysis", "information systems"
+        ],
+        "HR / Recruitment Specialist": [
+            "human resources", "hr management", "recruitment"
+        ]
+    }
+
+    def contains_term(term):
+        pattern = r"(?<!\w)" + re.escape(term.lower()) + r"(?!\w)"
+        return bool(re.search(pattern, text))
+
+    scores = {}
+    evidence = {}
+
+    for career, profile in CAREER_PROFILES.items():
+        matched_skills = []
+
+        for skill in profile.get("skills", []):
+            if contains_term(skill):
+                matched_skills.append(skill)
+
+        education_hits = [
+            term for term in education_keywords.get(career, [])
+            if contains_term(term)
+        ]
+
+        # Skills are the main factor; education is supporting evidence.
+        score = (len(matched_skills) * 3) + (len(education_hits) * 2)
+
+        if matched_skills and any(
+            term in text for term in [
+                "internship", "work experience",
+                "professional experience", "worked as"
+            ]
+        ):
+            score += 1
+
+        if matched_skills and any(
+            term in text for term in ["projects", "project experience", "portfolio"]
+        ):
+            score += 1
+
+        # Do not recommend a career without relevant evidence.
+        if score > 0:
+            scores[career] = score
+            evidence[career] = {
+                "matched_skills": matched_skills,
+                "education_evidence": education_hits
+            }
+
+    # Highest score first; skill matches break ties.
+    ranked = sorted(
+        scores.items(),
+        key=lambda item: (
+            item[1],
+            len(evidence[item[0]]["matched_skills"]),
+            len(evidence[item[0]]["education_evidence"])
+        ),
+        reverse=True
+    )
+
+    selected = ranked[:2]
+
+    if not selected:
+        return {
+            "top_careers": [],
+            "career_recommendation": "Insufficient evidence for a reliable match",
+            "career_roadmap": [
+                "Add your degree and field of study.",
+                "Mention relevant technical or professional skills.",
+                "Include work experience, internships and projects."
+            ],
+            "career_project_ideas": [
+                "Complete a practical project related to your field.",
+                "Add the tools used and results achieved to your resume."
+            ]
+        }
+
+    top_careers = []
+
+    for career, score in selected:
+        profile = CAREER_PROFILES[career]
+
+        top_careers.append({
+            "name": career,
+            "score": score,
+            "matched_skills": evidence[career]["matched_skills"],
+            "education_evidence": evidence[career]["education_evidence"],
+            "projects": profile.get("projects", [])
+        })
+
+    primary_career = selected[0][0]
+    primary_profile = CAREER_PROFILES[primary_career]
+
+    return {
+        "top_careers": top_careers,
+        "career_recommendation": primary_career,
+        "career_roadmap": primary_profile.get("roadmap", []),
+        "career_project_ideas": primary_profile.get("projects", [])
+    }
+
+
 
 def detect_resume_skills(resume_text):
     text = resume_text.lower()
@@ -467,172 +610,458 @@ def detect_resume_skills(resume_text):
 
     for skill in all_skills:
         pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
+
         if re.search(pattern, text):
             found.append(skill)
 
     return found
 
 
-def recommend_careers(resume_text):
-    text = resume_text.lower()
-    words = set(re.findall(r"[a-zA-Z0-9+#.]+", text))
-
-    scores = {}
-    evidence = {}
-
-    education_keywords = {
-        "Data Analyst": [
-            "data analytics", "data analysis", "statistics"
-        ],
-        "BI Analyst": ["business intelligence", "data analytics"],
-        "Data Scientist": ["data science", "statistics", "mathematics"],
-        "Machine Learning Engineer": [
-            "artificial intelligence", "machine learning"
-        ],
-        "Software Developer": [
-            "computer science", "software engineering", "computer engineering"
-        ],
-        "Web Developer": [
-            "computer science", "software engineering", "web development"
-        ],
-        "Cybersecurity Analyst": [
-            "cybersecurity", "information security"
-        ],
-        "Network Administrator": [
-            "networking", "computer networks"
-        ],
-        "Accountant / Finance Analyst": [
-            "accounting", "finance", "commerce", "b.com", "acca", "ca"
-        ],
-        "Digital Marketing Specialist": [
-            "marketing", "mass communication"
-        ],
-        "UI/UX Designer": [
-            "graphic design", "interaction design"
-        ],
-        "Teacher / Educator": [
-            "education", "b.ed", "m.ed", "teacher training"
-        ],
-        "Healthcare Professional": [
-            "medicine", "mbbs", "nursing", "pharmacy",
-            "physiotherapy", "public health", "health sciences"
-        ],
-        "Laboratory Technician": [
-            "medical laboratory technology", "laboratory science",
-            "biotechnology", "chemistry"
-        ],
-        "Engineer": [
-            "engineering", "mechanical engineering",
-            "electrical engineering", "civil engineering",
-            "chemical engineering"
-        ],
-        "Business Analyst": [
-            "business administration", "management", "information systems"
-        ],
-        "HR / Recruitment Specialist": [
-            "human resources", "hr management", "organizational psychology"
-        ]
-    }
-
-    for career, profile in CAREER_PROFILES.items():
-        matched_skills = [
-            skill for skill in profile["skills"]
-            if re.search(
-                r"(?<!\w)" + re.escape(skill) + r"(?!\w)",
-                text
-            )
-        ]
-
-        education_hits = [
-            term for term in education_keywords.get(career, [])
-            if term in text
-        ]
-
-        # Avoid recommending a career from generic words alone.
-        score = len(matched_skills) * 2 + len(education_hits) * 4
-
-        if matched_skills and any(
-            phrase in text for phrase in [
-                "work experience", "professional experience",
-                "internship", "worked as", "employment history"
-            ]
-        ):
-            score += 1
-
-        if matched_skills and any(
-            phrase in text for phrase in ["projects", "portfolio"]
-        ):
-            score += 1
-
-        scores[career] = score
-        evidence[career] = {
-            "matched_skills": matched_skills,
-            "education_evidence": education_hits
-        }
-
-    eligible = [
-        (career, score)
-        for career, score in scores.items()
-        if score > 0
-    ]
-
-    eligible.sort(key=lambda item: item[1], reverse=True)
-
-    selected = []
-
-    for career, score in eligible:
-        if not selected:
-            selected.append((career, score))
-        elif career != selected[0][0]:
-            selected.append((career, score))
-            break
-
-    # Do not invent a career if the resume has no reliable signals.
-    if not selected:
-        return {
-            "top_careers": [],
-            "career_recommendation": "Insufficient evidence for a reliable match",
-            "career_roadmap": [
-                "Add your degree, study field, relevant skills, work experience and projects.",
-                "Mention specific tools and achievements so career matching can be more accurate."
-            ],
-            "career_project_ideas": [
-                "Build a small project related to your degree or study field.",
-                "Complete a practical assignment using a skill you already know.",
-                "Document the project's goal, process, tools and results."
-            ]
-        }
-
-    top_careers = []
-
-    for career, score in selected:
-        top_careers.append({
-            "name": career,
-            "score": score,
-            "matched_skills": evidence[career]["matched_skills"],
-            "education_evidence": evidence[career]["education_evidence"],
-            "projects": CAREER_PROFILES[career]["projects"]
-        })
-
-    primary_career = selected[0][0]
-    primary_profile = CAREER_PROFILES[primary_career]
-
-    return {
-        "top_careers": top_careers,
-        "career_recommendation": primary_career,
-        "career_roadmap": primary_profile["roadmap"],
-        "career_project_ideas": primary_profile["projects"]
-    }
-
-
 # =========================================================
 # JOB MATCHING
 # =========================================================
 
+def get_job_requirements(career):
+    return JOB_PROFILES.get(career, [])
+
+
+def analyze_job_match(resume_text, requirements):
+    text = resume_text.lower()
+
+    matched = []
+    missing = []
+
+    for skill in requirements:
+        pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
+
+        if re.search(pattern, text):
+            matched.append(skill)
+        else:
+            missing.append(skill)
+
+    skill_coverage = (
+        len(matched) / len(requirements) * 100
+        if requirements else 0
+    )
+
+    description = " ".join(requirements)
+
+    try:
+        vectorizer = TfidfVectorizer(
+            stop_words="english",
+            ngram_range=(1, 2)
+        )
+
+        matrix = vectorizer.fit_transform([
+            resume_text,
+            description
+        ])
+
+        similarity = (
+            cosine_similarity(matrix[0:1], matrix[1:2])[0][0] * 100
+        )
+
+    except (ValueError, IndexError):
+        similarity = 0
+
+    match_score = round(
+        skill_coverage * 0.70 + similarity * 0.30,
+        2
+    )
+
+    skill_gap = round(
+        len(missing) / len(requirements) * 100,
+        2
+    ) if requirements else 0
+
+    return match_score, skill_gap, matched, missing
+
+
+# =========================================================
+# PROJECT IDEA GENERATOR
+# =========================================================
+
+def generate_project_ideas(top_careers, fallback_projects):
+    project_ideas = []
+
+    if top_careers:
+        for career_info in top_careers[:2]:
+
+            career_name = career_info["name"]
+            career_profile = CAREER_PROFILES.get(career_name, {})
+
+            project_list = career_profile.get("projects", [])
+            career_skills = career_profile.get("skills", [])
+
+            for index, project_title in enumerate(project_list[:2]):
+
+                if index == 0:
+                    difficulty = "Beginner"
+                else:
+                    difficulty = "Intermediate"
+
+                project_ideas.append({
+                    "title": project_title,
+                    "description": (
+                        f"Build this project to practise skills relevant "
+                        f"to the {career_name} career path. Document your "
+                        f"approach, tools, and results."
+                    ),
+                    "career": career_name,
+                    "level": difficulty,
+                    "skills": career_skills[:5]
+                })
+
+    else:
+        for project_title in fallback_projects[:3]:
+            project_ideas.append({
+                "title": project_title,
+                "description": (
+                    "Complete this practice project in your area of study "
+                    "and document your work and results."
+                ),
+                "career": "Explore your field",
+                "level": "Beginner",
+                "skills": [
+                    "Relevant subject knowledge",
+                    "Documentation"
+                ]
+            })
+
+    return project_ideas
+
+# =========================================================
+# HOME
+# =========================================================
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+# =========================================================
+# UPLOAD AND ANALYZE RESUME
+# =========================================================
+
+@app.route("/upload", methods=["POST"])
+def upload():
+
+    if "resume" not in request.files:
+        return "No resume uploaded.", 400
+
+    file = request.files["resume"]
+
+    if not file.filename:
+        return "No file selected.", 400
+
+    original_name = secure_filename(file.filename)
+
+    if not original_name.lower().endswith(".pdf"):
+        return "Please upload a PDF file.", 400
+
+    base, extension = os.path.splitext(original_name)
+
+    resume_name = original_name
+    file_path = os.path.join(UPLOAD_FOLDER, resume_name)
+    counter = 1
+
+    while os.path.exists(file_path):
+        resume_name = f"{base}_{counter}{extension}"
+        file_path = os.path.join(UPLOAD_FOLDER, resume_name)
+        counter += 1
+
+    file.save(file_path)
+
+    try:
+        reader = PdfReader(file_path)
+        pages_text = []
+
+        for page in reader.pages:
+            page_text = page.extract_text()
+
+            if page_text:
+                pages_text.append(page_text)
+
+        resume_text = "\n".join(pages_text).strip()
+
+    except Exception:
+        try:
+            os.remove(file_path)
+        except OSError:
+            pass
+
+        return (
+            "Could not read this PDF. Please upload a valid text-based PDF.",
+            400
+        )
+
+    if not resume_text:
+        try:
+            os.remove(file_path)
+        except OSError:
+            pass
+
+        return "No extractable text was found in this PDF.", 400
+
+    # -----------------------------------------------------
+    # CAREER RECOMMENDATIONS
+    # -----------------------------------------------------
+
+    career_result = recommend_careers(resume_text)
+
+    career_recommendation = career_result["career_recommendation"]
+    top_careers = career_result["top_careers"]
+    career_roadmap = career_result["career_roadmap"]
+    career_project_ideas = career_result["career_project_ideas"]
+
+    # Generate projects for the top two recommended careers.
+    project_ideas = generate_project_ideas(
+        top_careers,
+        career_project_ideas
+    )
+
+    # -----------------------------------------------------
+    # JOB MATCHING
+    # -----------------------------------------------------
+
+    requirements = get_job_requirements(career_recommendation)
+
+    match_score, skill_gap_percentage, matched_skills, missing_skills = (
+        analyze_job_match(resume_text, requirements)
+    )
+
+    found_skills = detect_resume_skills(resume_text)
+
+    overall_score = calculate_overall_score(
+        match_score,
+        skill_gap_percentage
+    )
+
+    # -----------------------------------------------------
+    # STRENGTHS
+    # -----------------------------------------------------
+
+    strengths = []
+
+    if matched_skills:
+        strengths.append(
+            "Resume contains relevant skill keywords: "
+            + ", ".join(matched_skills) + "."
+        )
+
+    if any(term in resume_text.lower() for term in [
+        "internship",
+        "professional experience",
+        "work experience",
+        "employment history",
+        "worked as"
+    ]):
+        strengths.append(
+            "Work or internship experience is mentioned."
+        )
+
+    if "project" in resume_text.lower():
+        strengths.append(
+            "A project section or project experience is mentioned."
+        )
+
+    if any(term in resume_text.lower() for term in [
+        "bachelor", "b.s.", "bs ", "degree", "university", "college",
+        "mbbs", "b.ed", "diploma"
+    ]):
+        strengths.append(
+            "Educational qualification information is present."
+        )
+
+    if not strengths:
+        strengths.append(
+            "The resume has been extracted. Add detailed skills, "
+            "education and experience for better matching."
+        )
+
+    # -----------------------------------------------------
+    # WEAKNESSES
+    # -----------------------------------------------------
+
+    weaknesses = []
+
+    if missing_skills:
+        weaknesses.append(
+            "Skills not detected for the leading career match: "
+            + ", ".join(missing_skills) + "."
+        )
+
+    if not any(term in resume_text.lower() for term in [
+        "project", "portfolio"
+    ]):
+        weaknesses.append(
+            "No clear project or portfolio evidence was detected."
+        )
+
+    if not any(term in resume_text.lower() for term in [
+        "experience", "internship", "worked as", "employment"
+    ]):
+        weaknesses.append(
+            "Work or internship experience was not clearly detected."
+        )
+
+    if not any(term in resume_text.lower() for term in [
+        "education", "university", "college", "degree",
+        "bachelor", "mbbs", "diploma"
+    ]):
+        weaknesses.append(
+            "Education information was not clearly detected."
+        )
+
+    if not weaknesses:
+        weaknesses.append(
+            "No major keyword-related weakness was detected."
+        )
+
+
+    # -----------------------------------------------------
+    # LEARNING RECOMMENDATIONS
+    # -----------------------------------------------------
+
+    learning_recommendations = []
+
+    learning_map = {
+        "sql": "SQL: Practise queries, joins, grouping and subqueries.",
+        "excel": "Excel: Practise formulas, lookup functions, PivotTables and charts.",
+        "power bi": "Power BI: Learn data modelling, Power Query and DAX.",
+        "python": "Python: Practise functions, data structures and projects.",
+        "pandas": "Pandas: Practise cleaning, grouping, merging and analysing datasets.",
+        "numpy": "NumPy: Learn arrays, indexing and numerical operations.",
+        "machine learning": "Machine learning: Study model training and evaluation.",
+        "html": "HTML: Build structured web pages.",
+        "css": "CSS: Practise responsive layouts.",
+        "javascript": "JavaScript: Practise application logic and DOM manipulation.",
+        "figma": "Figma: Practise wireframes and interactive prototypes.",
+        "seo": "SEO: Practise keyword research and website audits.",
+        "networking": "Networking: Practise IP addressing and troubleshooting.",
+        "accounting": "Accounting: Practise financial statements and reporting.",
+        "teaching": "Teaching: Develop lesson plans and assessment materials.",
+        "patient care": "Healthcare: Follow your qualification and supervised training requirements."
+    }
+
+    for skill in missing_skills:
+        recommendation = learning_map.get(skill.lower())
+        if recommendation:
+            learning_recommendations.append(recommendation)
+
+    if not learning_recommendations:
+        learning_recommendations.append(
+            "Continue improving skills relevant to your career and practise them through projects."
+        )
+
+    # -----------------------------------------------------
+    # INSIGHTS AND IMPROVEMENTS
+    # -----------------------------------------------------
+
+    insights = []
+
+    if match_score >= 70:
+        insights.append("Strong keyword coverage for the selected career profile.")
+    elif match_score >= 40:
+        insights.append("Partial keyword coverage for the selected career profile.")
+    else:
+        insights.append("Limited keyword coverage. Review the matched and missing skills.")
+
+    if top_careers:
+        insights.append("Leading career suggestion: " + career_recommendation + ".")
+    else:
+        insights.append(
+            "Career matching is uncertain because the resume contains limited relevant evidence."
+        )
+
+    insights.append(
+        "Scores are keyword-based estimates, not proof of ability or a hiring decision."
+    )
+
+    improvement_suggestions = []
+
+    if missing_skills:
+        improvement_suggestions.append(
+            "Develop relevant missing skills and list them on your resume only after gaining practical knowledge."
+        )
+
+    if "project" not in resume_text.lower():
+        improvement_suggestions.append(
+            "Build relevant portfolio projects and describe your actual contribution."
+        )
+
+    if not any(term in resume_text.lower() for term in [
+        "experience", "internship", "worked as", "employment"
+    ]):
+        improvement_suggestions.append(
+            "Include relevant internships, academic work or practical experience."
+        )
+
+    if "github" not in resume_text.lower():
+        improvement_suggestions.append(
+            "If relevant to your field, add a portfolio or GitHub link containing genuine work."
+        )
+
+    if "linkedin" not in resume_text.lower():
+        improvement_suggestions.append(
+            "Consider adding a professional LinkedIn profile."
+        )
+
+    if not improvement_suggestions:
+        improvement_suggestions.append(
+            "Keep your resume updated with verified skills, projects and achievements."
+        )
+
+    # -----------------------------------------------------
+    # SAVE ANALYSIS
+    # -----------------------------------------------------
+
+    save_analysis(
+        resume_name,
+        match_score,
+        skill_gap_percentage,
+        career_recommendation,
+        matched_skills,
+        missing_skills
+    )
+
+    # -----------------------------------------------------
+    # RESULT PAGE
+    # -----------------------------------------------------
+
+    return render_template(
+        "result.html",
+        resume_name=resume_name,
+        match_score=match_score,
+        skill_gap=skill_gap_percentage,
+        skill_gap_percentage=skill_gap_percentage,
+        overall_score=overall_score,
+        career_recommendation=career_recommendation,
+        top_careers=top_careers,
+        career_roadmap=career_roadmap,
+        career_project_ideas=career_project_ideas,
+        project_ideas=project_ideas,
+        matched_skills=matched_skills,
+        matched_job_skills=matched_skills,
+        found_skills=found_skills,
+        missing_skills=missing_skills,
+        strengths=strengths,
+        weaknesses=weaknesses,
+        insights=insights,
+        learning_recommendations=learning_recommendations,
+        improvement_suggestions=improvement_suggestions
+    )
+
+
+# =========================================================
+# JOB PROFILES
+# =========================================================
+
 JOB_PROFILES = {
     "Data Analyst": [
-        "sql", "excel", "power bi", "tableau", "pandas",
-        "numpy", "data analysis", "data visualization", "statistics"
+        "sql", "excel", "power bi", "tableau", "python",
+        "pandas", "numpy", "data analysis", "data visualization",
+        "statistics", "matplotlib"
     ],
     "BI Analyst": [
         "power bi", "tableau", "dax", "sql", "dashboard",
@@ -641,6 +1070,10 @@ JOB_PROFILES = {
     "Data Scientist": [
         "python", "pandas", "numpy", "statistics",
         "machine learning", "scikit-learn", "data science"
+    ],
+    "Machine Learning Engineer": [
+        "python", "machine learning", "tensorflow",
+        "pytorch", "scikit-learn", "deep learning"
     ],
     "Software Developer": [
         "python", "java", "c++", "c#", "git", "oop",
@@ -697,344 +1130,6 @@ JOB_PROFILES = {
 }
 
 
-def get_job_requirements(career):
-    return JOB_PROFILES.get(career, [])
-
-
-def analyze_job_match(resume_text, requirements):
-    text = resume_text.lower()
-    matched = []
-    missing = []
-
-    for skill in requirements:
-        pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
-        if re.search(pattern, text):
-            matched.append(skill)
-        else:
-            missing.append(skill)
-
-    skill_coverage = (
-        len(matched) / len(requirements) * 100
-        if requirements else 0
-    )
-
-    # Use TF-IDF with a career-specific description.
-    description = " ".join(requirements)
-
-    try:
-        vectorizer = TfidfVectorizer(
-            stop_words="english",
-            ngram_range=(1, 2)
-        )
-        matrix = vectorizer.fit_transform([resume_text, description])
-        similarity = cosine_similarity(matrix[0:1], matrix[1:2])[0][0] * 100
-    except (ValueError, IndexError):
-        similarity = 0
-
-    match_score = round(
-        skill_coverage * 0.70 + similarity * 0.30,
-        2
-    )
-
-    skill_gap = round(
-        len(missing) / len(requirements) * 100,
-        2
-    ) if requirements else 0
-
-    return match_score, skill_gap, matched, missing
-
-
-# =========================================================
-# HOME
-# =========================================================
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-# =========================================================
-# UPLOAD AND ANALYZE RESUME
-# =========================================================
-
-@app.route("/upload", methods=["POST"])
-def upload():
-    if "resume" not in request.files:
-        return "No resume uploaded.", 400
-
-    file = request.files["resume"]
-
-    if not file.filename:
-        return "No file selected.", 400
-
-    original_name = secure_filename(file.filename)
-
-    if not original_name.lower().endswith(".pdf"):
-        return "Please upload a PDF file.", 400
-
-    base, extension = os.path.splitext(original_name)
-    resume_name = original_name
-    file_path = os.path.join(UPLOAD_FOLDER, resume_name)
-    counter = 1
-
-    while os.path.exists(file_path):
-        resume_name = f"{base}_{counter}{extension}"
-        file_path = os.path.join(UPLOAD_FOLDER, resume_name)
-        counter += 1
-
-    file.save(file_path)
-
-    try:
-        reader = PdfReader(file_path)
-        pages_text = []
-
-        for page in reader.pages:
-            page_text = page.extract_text()
-            if page_text:
-                pages_text.append(page_text)
-
-        resume_text = "\n".join(pages_text).strip()
-
-    except Exception:
-        try:
-            os.remove(file_path)
-        except OSError:
-            pass
-
-        return "Could not read this PDF. Please upload a valid text-based PDF.", 400
-
-    if not resume_text:
-        try:
-            os.remove(file_path)
-        except OSError:
-            pass
-
-        return "No extractable text was found in this PDF.", 400
-
-    # Career recommendations depend on the actual resume.
-    career_result = recommend_careers(resume_text)
-
-    career_recommendation = career_result["career_recommendation"]
-    top_careers = career_result["top_careers"]
-    career_roadmap = career_result["career_roadmap"]
-    career_project_ideas = career_result["career_project_ideas"]
-
-    # Match against the primary career's skills, not always Data Analyst.
-    requirements = get_job_requirements(career_recommendation)
-
-    match_score, skill_gap_percentage, matched_skills, missing_skills = (
-        analyze_job_match(resume_text, requirements)
-    )
-
-    found_skills = detect_resume_skills(resume_text)
-
-    overall_score = calculate_overall_score(
-        match_score,
-        skill_gap_percentage
-    )
-
-    # =====================================================
-    # STRENGTHS
-    # =====================================================
-
-    strengths = []
-
-    if matched_skills:
-        strengths.append(
-            "Resume contains relevant skill keywords: "
-            + ", ".join(matched_skills) + "."
-        )
-
-    if any(term in resume_text.lower() for term in [
-        "internship", "professional experience", "work experience",
-        "employment history", "worked as"
-    ]):
-        strengths.append("Work or internship experience is mentioned.")
-
-    if "project" in resume_text.lower():
-        strengths.append("A project section or project experience is mentioned.")
-
-    if any(term in resume_text.lower() for term in [
-        "bachelor", "b.s.", "bs ", "degree", "university", "college",
-        "mbbs", "b.ed", "diploma"
-    ]):
-        strengths.append("Educational qualification information is present.")
-
-    if not strengths:
-        strengths.append(
-            "The resume has been extracted. Add detailed skills, education and experience for better matching."
-        )
-
-    # =====================================================
-    # WEAKNESSES
-    # =====================================================
-
-    weaknesses = []
-
-    if missing_skills:
-        weaknesses.append(
-            "Skills not detected for the leading career match: "
-            + ", ".join(missing_skills) + "."
-        )
-
-    if not any(term in resume_text.lower() for term in [
-        "project", "portfolio"
-    ]):
-        weaknesses.append("No clear project or portfolio evidence was detected.")
-
-    if not any(term in resume_text.lower() for term in [
-        "experience", "internship", "worked as", "employment"
-    ]):
-        weaknesses.append("Work or internship experience was not clearly detected.")
-
-    if not any(term in resume_text.lower() for term in [
-        "education", "university", "college", "degree", "bachelor",
-        "mbbs", "diploma"
-    ]):
-        weaknesses.append("Education information was not clearly detected.")
-
-    if not weaknesses:
-        weaknesses.append("No major keyword-related weakness was detected.")
-
-    # =====================================================
-    # LEARNING RECOMMENDATIONS
-    # =====================================================
-
-    learning_recommendations = []
-
-    learning_map = {
-        "sql": "SQL: Practice filtering, joins, grouping and subqueries.",
-        "excel": "Excel: Practice formulas, lookup functions, PivotTables and charts.",
-        "power bi": "Power BI: Learn data modeling, Power Query and DAX.",
-        "python": "Python: Practice functions, data structures and real projects.",
-        "pandas": "Pandas: Practice cleaning, grouping, merging and analyzing datasets.",
-        "numpy": "NumPy: Learn arrays, indexing, slicing and numerical operations.",
-        "machine learning": "Machine learning: Study model training, validation and evaluation.",
-        "html": "HTML: Build accessible, structured web pages.",
-        "css": "CSS: Practice responsive layouts and styling.",
-        "javascript": "JavaScript: Practice DOM manipulation and application logic.",
-        "figma": "Figma: Practice wireframes, components and interactive prototypes.",
-        "seo": "SEO: Practice keyword research, technical audits and content optimization.",
-        "networking": "Networking: Practice IP addressing, routing and troubleshooting.",
-        "accounting": "Accounting: Practice financial statements, reconciliation and reporting.",
-        "teaching": "Teaching: Develop lesson plans and student assessment materials.",
-        "patient care": "Healthcare: Follow your recognized qualification and supervised clinical training requirements."
-    }
-
-    for skill in missing_skills:
-        recommendation = learning_map.get(skill.lower())
-        if recommendation:
-            learning_recommendations.append(recommendation)
-
-    if not learning_recommendations:
-        learning_recommendations.append(
-            "Continue developing advanced skills relevant to your recommended career and validate them through practical work."
-        )
-
-    # =====================================================
-    # INSIGHTS
-    # =====================================================
-
-    insights = []
-
-    if match_score >= 70:
-        insights.append("The resume contains strong keyword coverage for the leading career profile.")
-    elif match_score >= 40:
-        insights.append("The resume contains partial keyword coverage for the leading career profile.")
-    else:
-        insights.append("The resume has limited keyword coverage for the leading career profile.")
-
-    if top_careers:
-        insights.append(
-            "Leading career suggestion: " + career_recommendation + "."
-        )
-    else:
-        insights.append(
-            "Career matching is uncertain because relevant evidence was limited."
-        )
-
-    insights.append(
-        "Scores are keyword-based estimates, not proof of professional ability or a hiring decision."
-    )
-
-    # =====================================================
-    # IMPROVEMENT SUGGESTIONS
-    # =====================================================
-
-    improvement_suggestions = []
-
-    if missing_skills:
-        improvement_suggestions.append(
-            "Develop the relevant missing skills and add them to your resume only after gaining practical knowledge."
-        )
-
-    if "project" not in resume_text.lower():
-        improvement_suggestions.append(
-            "Build 2-3 relevant portfolio projects. The ideas below are suggestions, not completed projects."
-        )
-
-    if not any(term in resume_text.lower() for term in [
-        "experience", "internship", "worked as", "employment"
-    ]):
-        improvement_suggestions.append(
-            "Mention relevant internships, employment, academic work or practical experience."
-        )
-
-    if "github" not in resume_text.lower():
-        improvement_suggestions.append(
-            "If relevant to your field, add a portfolio or GitHub link containing genuine work."
-        )
-
-    if "linkedin" not in resume_text.lower():
-        improvement_suggestions.append(
-            "Consider adding a professional LinkedIn profile."
-        )
-
-    if not improvement_suggestions:
-        improvement_suggestions.append(
-            "Keep your resume updated with verified skills, projects and measurable achievements."
-        )
-
-    # =====================================================
-    # SAVE TO DATABASE
-    # =====================================================
-
-    save_analysis(
-        resume_name,
-        match_score,
-        skill_gap_percentage,
-        career_recommendation,
-        matched_skills,
-        missing_skills
-    )
-
-    # =====================================================
-    # RESULT TEMPLATE
-    # =====================================================
-
-    return render_template(
-        "result.html",
-        resume_name=resume_name,
-        match_score=match_score,
-        skill_gap=skill_gap_percentage,
-        skill_gap_percentage=skill_gap_percentage,
-        overall_score=overall_score,
-        career_recommendation=career_recommendation,
-        top_careers=top_careers,
-        career_roadmap=career_roadmap,
-        career_project_ideas=career_project_ideas,
-        matched_skills=matched_skills,
-        matched_job_skills=matched_skills,
-        found_skills=found_skills,
-        missing_skills=missing_skills,
-        strengths=strengths,
-        weaknesses=weaknesses,
-        insights=insights,
-        learning_recommendations=learning_recommendations,
-        improvement_suggestions=improvement_suggestions
-    )
-
-
 # =========================================================
 # HISTORY
 # =========================================================
@@ -1045,8 +1140,8 @@ def history():
 
     analyses = connection.execute("""
         SELECT id, resume_name, match_score, skill_gap,
-               career_recommendation, matched_skills, missing_skills,
-               analysis_date
+               career_recommendation, matched_skills,
+               missing_skills, analysis_date
         FROM resume_analysis
         ORDER BY id DESC
     """).fetchall()
@@ -1076,31 +1171,34 @@ def ranking():
     ranked_candidates = []
 
     for candidate in candidates:
-        match_score = candidate["match_score"] or 0
-        skill_gap = candidate["skill_gap"] or 0
+        match = candidate["match_score"] or 0
+        gap = candidate["skill_gap"] or 0
         career = candidate["career_recommendation"] or "Not determined"
 
         ranked_candidates.append({
             "id": candidate["id"],
             "resume_name": candidate["resume_name"],
             "filename": candidate["resume_name"],
-            "match_score": match_score,
-            "skill_gap": skill_gap,
-            "overall_score": calculate_overall_score(match_score, skill_gap),
+            "match_score": match,
+            "skill_gap": gap,
+            "overall_score": calculate_overall_score(match, gap),
             "career": career,
             "recommended_career": career,
             "analysis_date": candidate["analysis_date"]
         })
 
     ranked_candidates.sort(
-        key=lambda candidate: candidate["overall_score"],
+        key=lambda item: item["overall_score"],
         reverse=True
     )
 
-    for index, candidate in enumerate(ranked_candidates, start=1):
-        candidate["rank"] = index
+    for rank, candidate in enumerate(ranked_candidates, start=1):
+        candidate["rank"] = rank
 
-    return render_template("ranking.html", candidates=ranked_candidates)
+    return render_template(
+        "ranking.html",
+        candidates=ranked_candidates
+    )
 
 
 # =========================================================
@@ -1140,6 +1238,10 @@ def dashboard():
 
     connection.close()
 
+    # Convert SQLite Row objects to ordinary dictionaries.
+    recent_analyses = [dict(row) for row in recent_analyses]
+    chart_data = [dict(row) for row in chart_data]
+
     return render_template(
         "dashboard.html",
         total_resumes=total_resumes,
@@ -1174,29 +1276,29 @@ def admin():
     ranked_candidates = []
 
     for candidate in candidates:
-        match_score = candidate["match_score"] or 0
-        skill_gap = candidate["skill_gap"] or 0
+        match = candidate["match_score"] or 0
+        gap = candidate["skill_gap"] or 0
         career = candidate["career_recommendation"] or "Not determined"
 
         ranked_candidates.append({
             "id": candidate["id"],
             "resume_name": candidate["resume_name"],
             "filename": candidate["resume_name"],
-            "match_score": match_score,
-            "skill_gap": skill_gap,
-            "overall_score": calculate_overall_score(match_score, skill_gap),
+            "match_score": match,
+            "skill_gap": gap,
+            "overall_score": calculate_overall_score(match, gap),
             "career": career,
             "recommended_career": career,
             "analysis_date": candidate["analysis_date"]
         })
 
     ranked_candidates.sort(
-        key=lambda candidate: candidate["overall_score"],
+        key=lambda item: item["overall_score"],
         reverse=True
     )
 
     average_overall = round(
-        sum(candidate["overall_score"] for candidate in ranked_candidates)
+        sum(item["overall_score"] for item in ranked_candidates)
         / len(ranked_candidates),
         2
     ) if ranked_candidates else 0
@@ -1222,8 +1324,8 @@ def candidate_details(candidate_id):
 
     candidate = connection.execute("""
         SELECT id, resume_name, match_score, skill_gap,
-               career_recommendation, matched_skills, missing_skills,
-               analysis_date
+               career_recommendation, matched_skills,
+               missing_skills, analysis_date
         FROM resume_analysis
         WHERE id = ?
     """, (candidate_id,)).fetchone()
@@ -1256,16 +1358,16 @@ def candidate_details(candidate_id):
         None
     )
 
-    match_score = candidate["match_score"] or 0
-    skill_gap = candidate["skill_gap"] or 0
+    match = candidate["match_score"] or 0
+    gap = candidate["skill_gap"] or 0
 
     return render_template(
         "candidate_details.html",
         candidate_id=candidate_id,
         resume_name=candidate["resume_name"],
-        match_score=match_score,
-        skill_gap=skill_gap,
-        overall_score=calculate_overall_score(match_score, skill_gap),
+        match_score=match,
+        skill_gap=gap,
+        overall_score=calculate_overall_score(match, gap),
         career=candidate["career_recommendation"],
         matched_skills=candidate["matched_skills"],
         missing_skills=candidate["missing_skills"],
@@ -1294,14 +1396,20 @@ def delete_candidate(candidate_id):
 
 
 # =========================================================
-# ERRORS AND RUN
+# ERROR HANDLER
 # =========================================================
 
 @app.errorhandler(413)
 def file_too_large(_error):
-    return "File too large. Please upload a PDF smaller than 10 MB.", 413
+    return (
+        "File too large. Please upload a PDF smaller than 10 MB.",
+        413
+    )
 
+
+# =========================================================
+# RUN APPLICATION
+# =========================================================
 
 if __name__ == "__main__":
-    app.run(debug=False)
-git add .
+    app.run(host="127.0.0.1", port=5000, debug=True)
