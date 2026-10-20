@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Resume Analytics Dashboard</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         * {
             box-sizing: border-box;
             margin: 0;
@@ -23,10 +41,19 @@
         }
 
         .container {
+<<<<<<< HEAD
             max-width: 1250px;
             margin: auto;
         }
 
+=======
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Header */
+
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         .header {
             background: #111827;
             color: white;
@@ -36,29 +63,44 @@
         }
 
         .header h1 {
+<<<<<<< HEAD
             margin-bottom: 10px;
+=======
+            margin-bottom: 8px;
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .header p {
             color: #d1d5db;
+<<<<<<< HEAD
             line-height: 1.6;
+=======
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .buttons {
             margin-top: 20px;
+<<<<<<< HEAD
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+=======
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .btn {
             display: inline-block;
+<<<<<<< HEAD
             padding: 11px 18px;
+=======
+            padding: 10px 18px;
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             background: white;
             color: #111827;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
+<<<<<<< HEAD
         }
 
         .btn:hover {
@@ -68,44 +110,94 @@
         .cards {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
+=======
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Statistics */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             gap: 20px;
             margin-bottom: 25px;
         }
 
+<<<<<<< HEAD
         .card, .chart-card, .recent {
             background: white;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
             min-width: 0;
+=======
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .card h3 {
             color: #6b7280;
+<<<<<<< HEAD
             font-size: 15px;
+=======
+            font-size: 16px;
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             margin-bottom: 12px;
         }
 
         .number {
             font-size: 32px;
             font-weight: bold;
+<<<<<<< HEAD
             overflow-wrap: anywhere;
         }
 
         .charts {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
+=======
+        }
+
+        /* Charts */
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             gap: 25px;
             margin-bottom: 25px;
         }
 
+<<<<<<< HEAD
         .chart-card h2, .recent h2 {
             margin-bottom: 20px;
             font-size: 19px;
+=======
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .chart-card h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .chart-container {
             position: relative;
+<<<<<<< HEAD
             height: 330px;
             width: 100%;
         }
@@ -118,6 +210,29 @@
             width: 100%;
             min-width: 750px;
             border-collapse: collapse;
+=======
+            height: 350px;
+        }
+
+        /* Recent Analyses */
+
+        .recent {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        .recent h2 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         th {
@@ -125,16 +240,25 @@
             color: white;
             padding: 14px;
             text-align: left;
+<<<<<<< HEAD
             white-space: nowrap;
+=======
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         td {
             padding: 14px;
             border-bottom: 1px solid #e5e7eb;
+<<<<<<< HEAD
             overflow-wrap: anywhere;
         }
 
         tbody tr:hover {
+=======
+        }
+
+        tr:hover {
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             background: #f9fafb;
         }
 
@@ -147,6 +271,7 @@
         }
 
         .empty {
+<<<<<<< HEAD
             padding: 30px;
             text-align: center;
             color: #6b7280;
@@ -159,6 +284,17 @@
         }
 
         @media (max-width: 900px) {
+=======
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             .cards {
                 grid-template-columns: 1fr;
             }
@@ -166,14 +302,26 @@
             .charts {
                 grid-template-columns: 1fr;
             }
+<<<<<<< HEAD
         }
 
         @media (max-width: 600px) {
+=======
+
+        }
+
+        @media (max-width: 600px) {
+
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             body {
                 padding: 15px;
             }
 
+<<<<<<< HEAD
             .header, .card, .chart-card, .recent {
+=======
+            .header {
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
                 padding: 20px;
             }
 
@@ -181,6 +329,7 @@
                 height: 280px;
             }
 
+<<<<<<< HEAD
             .number {
                 font-size: 28px;
             }
@@ -377,3 +526,399 @@
 </body>
 </html>
 ```
+=======
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- ============================== -->
+    <!-- Header -->
+    <!-- ============================== -->
+
+    <div class="header">
+
+        <h1>📊 AI Resume Analytics Dashboard</h1>
+
+        <p>
+            AI-powered resume screening, skill gap analysis
+            and career recommendation analytics.
+        </p>
+
+        <div class="buttons">
+
+            <a href="/" class="btn">
+                ➕ Analyze New Resume
+            </a>
+
+            <a href="/history" class="btn">
+                📋 Resume History
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- Statistics Cards -->
+    <!-- ============================== -->
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <h3>📄 Total Resumes</h3>
+
+            <div class="number">
+                {{ total_resumes }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🎯 Average Match Score</h3>
+
+            <div class="number">
+                {{ average_match }}%
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🧩 Average Skill Gap</h3>
+
+            <div class="number">
+                {{ average_skill_gap }}%
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- Interactive Charts -->
+    <!-- ============================== -->
+
+    <div class="charts">
+
+
+        <!-- Match vs Skill Gap -->
+
+        <div class="chart-card">
+
+            <h2>📈 Match Score vs Skill Gap</h2>
+
+            <div class="chart-container">
+
+                <canvas id="matchSkillChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Match Score Chart -->
+
+        <div class="chart-card">
+
+            <h2>🎯 Resume Match Performance</h2>
+
+            <div class="chart-container">
+
+                <canvas id="matchChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- Recent Analyses -->
+    <!-- ============================== -->
+
+    <div class="recent">
+
+        <h2>📋 Recent Resume Analyses</h2>
+
+
+        {% if recent_analyses %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Resume</th>
+
+                    <th>Match Score</th>
+
+                    <th>Skill Gap</th>
+
+                    <th>Career Recommendation</th>
+
+                    <th>Date</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for analysis in recent_analyses %}
+
+                <tr>
+
+                    <td>
+                        📄 {{ analysis[0] }}
+                    </td>
+
+                    <td class="score">
+                        {{ analysis[1] }}%
+                    </td>
+
+                    <td>
+                        {{ analysis[2] }}%
+                    </td>
+
+                    <td class="career">
+                        {{ analysis[3] }}
+                    </td>
+
+                    <td>
+                        {{ analysis[4] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No Resume Analysis Found</h3>
+
+            <p>
+                Analyze a resume to see dashboard statistics.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ============================== -->
+<!-- Chart JavaScript -->
+<!-- ============================== -->
+
+<script>
+
+    // Get chart data from Flask
+
+    const chartData = {{ chart_data | tojson }};
+
+
+    // Extract data
+
+    const resumeNames = chartData.map(
+        item => item[0]
+    );
+
+    const matchScores = chartData.map(
+        item => item[1]
+    );
+
+    const skillGaps = chartData.map(
+        item => item[2]
+    );
+
+
+    // ==============================
+    // Match vs Skill Gap Chart
+    // ==============================
+
+    const matchSkillContext =
+        document
+        .getElementById("matchSkillChart")
+        .getContext("2d");
+
+
+    new Chart(matchSkillContext, {
+
+        type: "bar",
+
+        data: {
+
+            labels: resumeNames,
+
+            datasets: [
+
+                {
+                    label: "Match Score (%)",
+                    data: matchScores
+                },
+
+                {
+                    label: "Skill Gap (%)",
+                    data: skillGaps
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100,
+
+                    title: {
+
+                        display: true,
+
+                        text: "Percentage (%)"
+
+                    }
+
+                }
+
+            },
+
+            plugins: {
+
+                legend: {
+
+                    position: "top"
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+    // ==============================
+    // Match Score Line Chart
+    // ==============================
+
+    const matchContext =
+        document
+        .getElementById("matchChart")
+        .getContext("2d");
+
+
+    new Chart(matchContext, {
+
+        type: "line",
+
+        data: {
+
+            labels: resumeNames,
+
+            datasets: [
+
+                {
+
+                    label: "Resume Match Score (%)",
+
+                    data: matchScores,
+
+                    tension: 0.3,
+
+                    fill: false
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100,
+
+                    title: {
+
+                        display: true,
+
+                        text: "Match Score (%)"
+
+                    }
+
+                }
+
+            },
+
+            plugins: {
+
+                legend: {
+
+                    position: "top"
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763

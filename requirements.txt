@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 Flask>=3.0
 pypdf>=5.0
 scikit-learn>=1.5
+=======
+Flask
+pandas
+numpy
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763

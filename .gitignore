@@ -1,7 +1,13 @@
 venv/
+<<<<<<< HEAD
 .venv/
 __pycache__/
 *.py[cod]
 resume_analyzer.db
 uploads/*.pdf
 .env
+=======
+uploads/
+_pycache_/
+resume_analyzer.db
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763

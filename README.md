@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Resume Analyzer & Job Matching System
 
 A Flask web application that analyzes text-based PDF resumes against a configurable project target role (currently Data Analyst), estimates job alignment, identifies missing skills, recommends career paths, and stores analysis history in SQLite.
@@ -76,3 +77,7 @@ The included configuration targets **Data Analyst** and checks Python, SQL, Exce
 - The SQLite database is created automatically on first run.
 - Existing resume PDFs and the old database are intentionally excluded from this submission ZIP to avoid sharing personal data. Keep your original folder as a backup if you need previous analysis records.
 - This is a university project/demo. Authentication and production deployment hardening are not included; do not expose the admin/delete routes to the public internet as-is.
+=======
+# AI-Resume-Analyzer
+AI-Based Resume Screening and Job Matching System
+>>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
