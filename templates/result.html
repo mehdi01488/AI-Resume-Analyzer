@@ -1,23 +1,8 @@
-<<<<<<< HEAD
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Resume Analysis Result</title>
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-=======
-```html
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>AI Resume Analysis Result</title>
 
     <style>
@@ -26,7 +11,6 @@
             padding: 0;
             box-sizing: border-box;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -34,26 +18,15 @@
             color: #172033;
         }
 
-<<<<<<< HEAD
-=======
-        /* ================= NAVBAR ================= */
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         nav {
             background: #111827;
             min-height: 72px;
-            padding: 0 5%;
+            padding: 16px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-<<<<<<< HEAD
-            box-shadow: 0 3px 15px rgba(0,0,0,.12);
-        }
-
-        .logo { color: white; font-size: 21px; font-weight: 800; }
-
-        .nav-links { display: flex; align-items: center; gap: 26px; }
-=======
+            gap: 20px;
+            flex-wrap: wrap;
             box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
         }
 
@@ -66,22 +39,15 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 26px;
+            gap: 22px;
+            flex-wrap: wrap;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .nav-links a {
             color: #cbd5e1;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-<<<<<<< HEAD
-            transition: .25s;
-        }
-
-        .nav-links a:hover { color: white; }
-        .ranking-link { color: #fbbf24 !important; }
-=======
             transition: 0.25s;
         }
 
@@ -93,34 +59,22 @@
             color: #fbbf24 !important;
         }
 
-        /* ================= CONTAINER ================= */
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
-
         .container {
             width: 92%;
             max-width: 1280px;
-            margin: 40px auto 60px;
+            margin: 35px auto 55px;
         }
 
-<<<<<<< HEAD
-=======
-        /* ================= PAGE HEADER ================= */
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         .page-header {
             background: linear-gradient(135deg, #111827, #1e3a8a);
             color: white;
             border-radius: 22px;
             padding: 38px;
             margin-bottom: 28px;
-<<<<<<< HEAD
-            box-shadow: 0 12px 30px rgba(15,23,42,.12);
-=======
             box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
-        .page-header .small-title {
+        .small-title {
             color: #93c5fd;
             font-size: 13px;
             font-weight: 700;
@@ -129,29 +83,20 @@
             margin-bottom: 10px;
         }
 
-<<<<<<< HEAD
-        .page-header h1 { font-size: 32px; margin-bottom: 10px; }
-=======
         .page-header h1 {
             font-size: 32px;
             margin-bottom: 10px;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .page-header p {
             color: #dbeafe;
             font-size: 15px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-<<<<<<< HEAD
-=======
-        /* ================= SCORE GRID ================= */
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         .score-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 18px;
             margin-bottom: 28px;
         }
@@ -159,26 +104,18 @@
         .score-card {
             background: white;
             border-radius: 18px;
-            padding: 25px 20px;
+            padding: 24px 20px;
             border: 1px solid #e5e7eb;
-<<<<<<< HEAD
-            box-shadow: 0 7px 22px rgba(15,23,42,.06);
-            transition: .25s;
-=======
             box-shadow: 0 7px 22px rgba(15, 23, 42, 0.06);
             transition: 0.25s;
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             position: relative;
             overflow: hidden;
+            min-width: 0;
         }
 
         .score-card:hover {
             transform: translateY(-4px);
-<<<<<<< HEAD
-            box-shadow: 0 12px 28px rgba(15,23,42,.10);
-=======
             box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .score-card::before {
@@ -191,13 +128,6 @@
             background: #2563eb;
         }
 
-<<<<<<< HEAD
-        .score-card:nth-child(2)::before { background: #8b5cf6; }
-        .score-card:nth-child(3)::before { background: #f59e0b; }
-        .score-card:nth-child(4)::before { background: #10b981; }
-
-        .score-icon { font-size: 27px; margin-bottom: 14px; }
-=======
         .score-card:nth-child(2)::before {
             background: #8b5cf6;
         }
@@ -214,25 +144,21 @@
             font-size: 27px;
             margin-bottom: 14px;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .score-label {
             color: #64748b;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             margin-bottom: 9px;
         }
 
         .score-value {
             color: #2563eb;
-            font-size: 30px;
+            font-size: 29px;
             font-weight: 800;
+            overflow-wrap: anywhere;
         }
 
-<<<<<<< HEAD
-        .skill-gap-value { color: #7c3aed; }
-        .overall-value { color: #d97706; }
-=======
         .skill-gap-value {
             color: #7c3aed;
         }
@@ -240,34 +166,20 @@
         .overall-value {
             color: #d97706;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .career-value {
             color: #059669;
             font-size: 19px;
-<<<<<<< HEAD
             line-height: 1.5;
-            overflow-wrap: anywhere;
         }
 
-=======
-            line-height: 1.3;
-        }
-
-        /* ================= MAIN SECTION ================= */
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         .section {
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 18px;
             padding: 28px;
             margin-bottom: 22px;
-<<<<<<< HEAD
-            box-shadow: 0 7px 22px rgba(15,23,42,.05);
-=======
             box-shadow: 0 7px 22px rgba(15, 23, 42, 0.05);
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .section-header {
@@ -280,39 +192,27 @@
 
         .section-title {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
         }
 
-<<<<<<< HEAD
-        .section-title h2 { font-size: 19px; color: #111827; }
-=======
         .section-title h2 {
             font-size: 19px;
             color: #111827;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .section-description {
             color: #64748b;
             font-size: 13px;
-            margin-top: 5px;
-<<<<<<< HEAD
+            margin-top: 6px;
             line-height: 1.6;
         }
-
-        .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-=======
-        }
-
-        /* ================= SKILLS ================= */
 
         .skills {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .skill {
             display: inline-flex;
@@ -324,14 +224,9 @@
             border: 1px solid #bfdbfe;
             font-size: 13px;
             font-weight: 700;
+            overflow-wrap: anywhere;
         }
 
-<<<<<<< HEAD
-        .missing { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
-        .found { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
-
-        .empty { color: #64748b; font-size: 14px; padding: 12px 0; }
-=======
         .missing {
             background: #fef2f2;
             color: #b91c1c;
@@ -347,31 +242,94 @@
         .empty {
             color: #64748b;
             font-size: 14px;
-            padding: 12px 0;
+            padding: 8px 0;
+            line-height: 1.7;
         }
 
-        /* ================= INSIGHT GRID ================= */
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
-
+        .career-grid,
         .insight-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 18px;
         }
 
+        .insight-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .career-card,
         .insight-box {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 15px;
             padding: 22px;
-<<<<<<< HEAD
             min-width: 0;
         }
 
-        .insight-box.strength { border-top: 4px solid #10b981; }
-        .insight-box.weakness { border-top: 4px solid #f59e0b; }
-        .insight-box.ai { border-top: 4px solid #2563eb; }
-=======
+        .career-card {
+            border-top: 4px solid #2563eb;
+        }
+
+        .career-card:first-child {
+            border-top-color: #059669;
+        }
+
+        .career-card h3,
+        .insight-box h3 {
+            font-size: 17px;
+            margin-bottom: 13px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .career-rank {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-bottom: 12px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .career-score {
+            font-size: 22px;
+            color: #059669;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .career-card p,
+        .insight-box p {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .career-card h4 {
+            margin: 16px 0 9px;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        .career-card ul,
+        .insight-box ul,
+        .improvement-box ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 9px;
+            line-height: 1.6;
+            color: #475569;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
         }
 
         .insight-box.strength {
@@ -385,43 +343,6 @@
         .insight-box.ai {
             border-top: 4px solid #2563eb;
         }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
-
-        .insight-box h3 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #111827;
-<<<<<<< HEAD
-            line-height: 1.5;
-        }
-
-        ul { padding-left: 20px; }
-=======
-        }
-
-        /* ================= LISTS ================= */
-
-        ul {
-            padding-left: 20px;
-        }
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
-
-        li {
-            margin-bottom: 10px;
-            line-height: 1.6;
-            color: #475569;
-            font-size: 14px;
-        }
-
-<<<<<<< HEAD
-        li:last-child { margin-bottom: 0; }
-=======
-        li:last-child {
-            margin-bottom: 0;
-        }
-
-        /* ================= IMPROVEMENT ================= */
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .improvement-box {
             background: linear-gradient(135deg, #eff6ff, #f8fafc);
@@ -430,8 +351,9 @@
             padding: 22px;
         }
 
-<<<<<<< HEAD
-        .improvement-box li { color: #334155; }
+        .improvement-box li {
+            color: #334155;
+        }
 
         .project-meta {
             margin-top: 12px;
@@ -441,7 +363,9 @@
             overflow-wrap: anywhere;
         }
 
-        .project-meta strong { color: #172033; }
+        .project-meta strong {
+            color: #172033;
+        }
 
         .project-badge {
             display: inline-block;
@@ -453,13 +377,6 @@
             font-weight: 700;
             margin-bottom: 12px;
         }
-=======
-        .improvement-box li {
-            color: #334155;
-        }
-
-        /* ================= BOTTOM ACTIONS ================= */
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 
         .actions {
             display: flex;
@@ -480,24 +397,11 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-<<<<<<< HEAD
-            transition: .25s;
-=======
             transition: 0.25s;
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         }
 
         .btn:hover {
             transform: translateY(-3px);
-<<<<<<< HEAD
-            box-shadow: 0 8px 18px rgba(15,23,42,.15);
-        }
-
-        .btn-blue { background: #2563eb; }
-        .btn-green { background: #059669; }
-        .btn-dark { background: #111827; }
-        .btn-gold { background: #d97706; }
-=======
             box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
         }
 
@@ -517,9 +421,6 @@
             background: #d97706;
         }
 
-        /* ================= FOOTER ================= */
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
-
         footer {
             background: #111827;
             color: #94a3b8;
@@ -528,31 +429,17 @@
             font-size: 13px;
         }
 
-<<<<<<< HEAD
         @media (max-width: 1000px) {
-            .score-grid { grid-template-columns: repeat(2, 1fr); }
-            .insight-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 650px) {
-=======
-        /* ================= RESPONSIVE ================= */
-
-        @media (max-width: 1000px) {
-
             .score-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .insight-grid {
                 grid-template-columns: 1fr;
             }
-
         }
 
         @media (max-width: 650px) {
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
             nav {
                 flex-direction: column;
                 gap: 15px;
@@ -560,26 +447,10 @@
             }
 
             .nav-links {
-                flex-wrap: wrap;
                 justify-content: center;
                 gap: 14px;
             }
 
-<<<<<<< HEAD
-            .container { width: 94%; margin-top: 25px; }
-
-            .page-header { padding: 27px 22px; }
-            .page-header h1 { font-size: 25px; }
-
-            .score-grid, .insight-grid { grid-template-columns: 1fr; }
-
-            .section { padding: 22px; }
-            .section-header { align-items: flex-start; }
-
-            .btn { width: 100%; }
-        }
-    </style>
-=======
             .container {
                 width: 94%;
                 margin-top: 25px;
@@ -593,7 +464,8 @@
                 font-size: 25px;
             }
 
-            .score-grid {
+            .score-grid,
+            .career-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -601,23 +473,15 @@
                 padding: 22px;
             }
 
-            .section-header {
-                align-items: flex-start;
-            }
-
             .btn {
                 width: 100%;
             }
         }
-
     </style>
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
 </head>
 
 <body>
 
-<<<<<<< HEAD
 <nav>
     <div class="logo">🤖 AI Resume Analyzer</div>
     <div class="nav-links">
@@ -628,105 +492,129 @@
     </div>
 </nav>
 
-<div class="container">
+<main class="container">
 
-    <div class="page-header">
+    <header class="page-header">
         <div class="small-title">AI-Powered Resume Screening</div>
         <h1>Resume Analysis Complete</h1>
-=======
-
-<!-- ================= NAVBAR ================= -->
-
-<nav>
-
-    <div class="logo">
-        🤖 AI Resume Analyzer
-    </div>
-
-    <div class="nav-links">
-
-        <a href="/">
-            Home
-        </a>
-
-        <a href="/history">
-            History
-        </a>
-
-        <a href="/dashboard">
-            Dashboard
-        </a>
-
-        <a href="/ranking" class="ranking-link">
-            🏆 Ranking
-        </a>
-
-    </div>
-
-</nav>
-
-
-<!-- ================= MAIN ================= -->
-
-<div class="container">
-
-
-    <!-- ================= HEADER ================= -->
-
-    <div class="page-header">
-
-        <div class="small-title">
-            AI-Powered Resume Screening
-        </div>
-
-        <h1>
-            Resume Analysis Complete
-        </h1>
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         <p>
-            Your resume has been analyzed using AI-based job matching,
-            skill detection and career recommendation.
+            Your resume has been analyzed using skill detection,
+            job matching and career recommendation.
         </p>
-<<<<<<< HEAD
-    </div>
+    </header>
 
-    <div class="score-grid">
+    <!-- SCORE CARDS -->
+    <section class="score-grid">
         <div class="score-card">
             <div class="score-icon">🎯</div>
             <div class="score-label">AI MATCH SCORE</div>
-            <div class="score-value">{{ match_score }}%</div>
+            <div class="score-value">{{ match_score | default(0) }}%</div>
         </div>
 
         <div class="score-card">
             <div class="score-icon">🧩</div>
             <div class="score-label">SKILL GAP</div>
-            <div class="score-value skill-gap-value">{{ skill_gap_percentage }}%</div>
+            <div class="score-value skill-gap-value">
+                {{ skill_gap_percentage | default(skill_gap | default(0)) }}%
+            </div>
         </div>
 
         <div class="score-card">
             <div class="score-icon">⭐</div>
             <div class="score-label">OVERALL CANDIDATE SCORE</div>
-            <div class="score-value overall-value">{{ overall_score }}%</div>
+            <div class="score-value overall-value">
+                {{ overall_score | default(0) }}%
+            </div>
         </div>
 
         <div class="score-card">
             <div class="score-icon">💼</div>
-            <div class="score-label">TOP CAREER RECOMMENDATIONS</div>
-            <div class="score-value career-value">{{ career_recommendation }}</div>
+            <div class="score-label">TOP CAREER MATCH</div>
+            <div class="score-value career-value">
+                {{ career_recommendation | default('Not available') }}
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- TOP TWO CAREER RECOMMENDATIONS -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>🎯</span>
+                <div>
+                    <h2>Top 2 Career Recommendations</h2>
+                    <p class="section-description">
+                        Career suggestions based on the skills and evidence detected in your resume.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {% if top_careers %}
+        <div class="career-grid">
+            {% for career in top_careers[:2] %}
+            <article class="career-card">
+                <span class="career-rank">
+                    {% if loop.index == 1 %}🥇 1st Recommendation{% else %}🥈 2nd Recommendation{% endif %}
+                </span>
+
+                <h3>{{ career.name | default('Career recommendation') }}</h3>
+
+                {% if career.score is defined %}
+                <div class="career-score">
+                    {{ career.score }} <span style="font-size:13px;color:#64748b;">match score</span>
+                </div>
+                {% endif %}
+
+                {% if career.matched_skills %}
+                <h4>Matched Skills</h4>
+                <div class="skills">
+                    {% for skill in career.matched_skills %}
+                    <span class="skill found">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if career.education_evidence %}
+                <h4>Education Evidence</h4>
+                <p>{{ career.education_evidence }}</p>
+                {% endif %}
+
+                {% if career.projects %}
+                <h4>Suggested Projects</h4>
+                <ul>
+                    {% for project in career.projects %}
+                    <li>
+                        {% if project is mapping %}
+                            {{ project.title | default(project.name | default(project.description | default('Suggested project'))) }}
+                        {% else %}
+                            {{ project }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty">
+            Top career recommendations were not provided by the application.
+            Please check that the Flask route passes the top_careers variable to this template.
+        </p>
+        {% endif %}
+    </section>
 
     <!-- MATCHED SKILLS -->
-    <div class="section">
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>✅</span>
                 <div>
                     <h2>Matched Skills</h2>
-                    <div class="section-description">
-                        Skills from your resume that match the selected career requirements.
-                    </div>
+                    <p class="section-description">
+                        Skills from your resume that match the selected job requirements.
+                    </p>
                 </div>
             </div>
         </div>
@@ -740,18 +628,18 @@
         {% else %}
         <p class="empty">No required skills were matched.</p>
         {% endif %}
-    </div>
+    </section>
 
     <!-- MISSING SKILLS -->
-    <div class="section">
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>❌</span>
                 <div>
                     <h2>Missing Skills</h2>
-                    <div class="section-description">
-                        Relevant skills not detected in your resume for the recommended career.
-                    </div>
+                    <p class="section-description">
+                        Relevant skills not detected in your resume for the selected job.
+                    </p>
                 </div>
             </div>
         </div>
@@ -763,20 +651,20 @@
             {% endfor %}
         </div>
         {% else %}
-        <p class="empty">🎉 Excellent! No major required skills are missing.</p>
+        <p class="empty">🎉 No missing required skills were reported.</p>
         {% endif %}
-    </div>
+    </section>
 
-    <!-- FOUND SKILLS -->
-    <div class="section">
+    <!-- DETECTED SKILLS -->
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>🧠</span>
                 <div>
                     <h2>Skills Detected in Resume</h2>
-                    <div class="section-description">
+                    <p class="section-description">
                         Technical and professional skills identified from your resume.
-                    </div>
+                    </p>
                 </div>
             </div>
         </div>
@@ -790,24 +678,24 @@
         {% else %}
         <p class="empty">No technical skills were detected.</p>
         {% endif %}
-    </div>
+    </section>
 
     <!-- AI INSIGHTS -->
-    <div class="section">
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>🤖</span>
                 <div>
                     <h2>AI Resume Insights</h2>
-                    <div class="section-description">
-                        Analysis of your resume strengths and improvement areas.
-                    </div>
+                    <p class="section-description">
+                        Resume strengths and areas that may need improvement.
+                    </p>
                 </div>
             </div>
         </div>
 
         <div class="insight-grid">
-            <div class="insight-box strength">
+            <article class="insight-box strength">
                 <h3>💪 Strengths</h3>
                 {% if strengths %}
                 <ul>
@@ -818,9 +706,9 @@
                 {% else %}
                 <p class="empty">No strengths identified.</p>
                 {% endif %}
-            </div>
+            </article>
 
-            <div class="insight-box weakness">
+            <article class="insight-box weakness">
                 <h3>⚠️ Areas to Improve</h3>
                 {% if weaknesses %}
                 <ul>
@@ -831,9 +719,9 @@
                 {% else %}
                 <p class="empty">No major weaknesses identified.</p>
                 {% endif %}
-            </div>
+            </article>
 
-            <div class="insight-box ai">
+            <article class="insight-box ai">
                 <h3>💡 AI Insights</h3>
                 {% if insights %}
                 <ul>
@@ -844,20 +732,20 @@
                 {% else %}
                 <p class="empty">No additional insights available.</p>
                 {% endif %}
-            </div>
+            </article>
         </div>
-    </div>
+    </section>
 
     <!-- LEARNING RECOMMENDATIONS -->
-    <div class="section">
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>📚</span>
                 <div>
                     <h2>Learning Recommendations</h2>
-                    <div class="section-description">
+                    <p class="section-description">
                         Recommended areas to strengthen your profile.
-                    </div>
+                    </p>
                 </div>
             </div>
         </div>
@@ -871,80 +759,113 @@
         {% else %}
         <p class="empty">No additional learning recommendations at this time.</p>
         {% endif %}
-    </div>
+    </section>
 
-    <!-- CAREER PROJECT IDEAS -->
-    <div class="section">
+    <!-- CAREER ROADMAP -->
+    {% if career_roadmap %}
+    <section class="section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>🗺️</span>
+                <div>
+                    <h2>Career Roadmap</h2>
+                    <p class="section-description">
+                        Suggested learning path for the primary recommended career.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {% if career_roadmap is string %}
+        <p>{{ career_roadmap }}</p>
+        {% else %}
+        <ul>
+            {% for step in career_roadmap %}
+            <li>
+                {% if step is mapping %}
+                    {{ step.title | default(step.name | default(step.description | default(step))) }}
+                {% else %}
+                    {{ step }}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <!-- RECOMMENDED PROJECT IDEAS -->
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>🚀</span>
                 <div>
                     <h2>Recommended Project Ideas</h2>
-                    <div class="section-description">
-                        Portfolio project suggestions based on your skills and recommended careers.
-                    </div>
+                    <p class="section-description">
+                        Portfolio project suggestions based on your skills and careers.
+                    </p>
                 </div>
             </div>
         </div>
 
         {% if project_ideas %}
-        <div class="insight-grid">
+        <div class="career-grid">
             {% for project in project_ideas %}
-            <div class="insight-box ai">
+            <article class="career-card">
                 <span class="project-badge">
-                    {{ project.career | default('Career Project', true) }}
+                    {{ project.career | default('Career Project', true) if project is mapping else 'Career Project' }}
                 </span>
 
-                <h3>💡 {{ project.title | default('Suggested Project', true) }}</h3>
+                <h3>
+                    {% if project is mapping %}
+                        {{ project.title | default(project.name | default('Suggested Project', true), true) }}
+                    {% else %}
+                        {{ project }}
+                    {% endif %}
+                </h3>
 
-                <p style="color:#475569; font-size:14px; line-height:1.7;">
+                {% if project is mapping %}
+                <p>
                     {{ project.description | default('Build this project to practise relevant skills.', true) }}
                 </p>
 
                 <div class="project-meta">
-                    <div>
-                        <strong>Difficulty:</strong>
-                        {{ project.level | default('Beginner', true) }}
-                    </div>
+                    {% if project.level is defined %}
+                    <div><strong>Difficulty:</strong> {{ project.level }}</div>
+                    {% endif %}
 
+                    {% if project.skills is defined %}
                     <div>
                         <strong>Required Skills:</strong>
-                        {% if project.skills %}
-                            {% if project.skills is string %}
-                                {{ project.skills }}
-                            {% else %}
-                                {{ project.skills | join(', ') }}
-                            {% endif %}
+                        {% if project.skills is string %}
+                            {{ project.skills }}
                         {% else %}
-                            Skills relevant to this career
+                            {{ project.skills | join(', ') }}
                         {% endif %}
                     </div>
+                    {% endif %}
                 </div>
-            </div>
+                {% endif %}
+            </article>
             {% endfor %}
         </div>
-
-        <p class="section-description" style="margin-top:18px;">
-            Note: These are suggested practice and portfolio projects. They are not
-            represented as projects you have already completed.
-        </p>
         {% else %}
         <p class="empty">
-            Project ideas will appear here when the application provides career-specific suggestions.
+            Project ideas will appear here when the application provides suggestions.
         </p>
         {% endif %}
-    </div>
+    </section>
 
     <!-- RESUME IMPROVEMENT -->
-    <div class="section">
+    <section class="section">
         <div class="section-header">
             <div class="section-title">
                 <span>📝</span>
                 <div>
                     <h2>Resume Improvement Suggestions</h2>
-                    <div class="section-description">
+                    <p class="section-description">
                         Practical suggestions to improve your resume and job compatibility.
-                    </div>
+                    </p>
                 </div>
             </div>
         </div>
@@ -957,10 +878,10 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p class="empty">🎉 Your resume looks good. No major improvements are required.</p>
+            <p class="empty">No additional improvement suggestions were provided.</p>
             {% endif %}
         </div>
-    </div>
+    </section>
 
     <!-- ACTION BUTTONS -->
     <div class="actions">
@@ -970,7 +891,7 @@
         <a href="/ranking" class="btn btn-gold">🏆 Candidate Ranking</a>
     </div>
 
-</div>
+</main>
 
 <footer>
     AI Resume Analyzer | Smart Career Recommendation System
@@ -978,530 +899,3 @@
 
 </body>
 </html>
-=======
-
-    </div>
-
-
-    <!-- ================= SCORE CARDS ================= -->
-
-    <div class="score-grid">
-
-
-        <!-- MATCH SCORE -->
-
-        <div class="score-card">
-
-            <div class="score-icon">
-                🎯
-            </div>
-
-            <div class="score-label">
-                AI MATCH SCORE
-            </div>
-
-            <div class="score-value">
-                {{ match_score }}%
-            </div>
-
-        </div>
-
-
-        <!-- SKILL GAP -->
-
-        <div class="score-card">
-
-            <div class="score-icon">
-                🧩
-            </div>
-
-            <div class="score-label">
-                SKILL GAP
-            </div>
-
-            <div class="score-value skill-gap-value">
-                {{ skill_gap_percentage }}%
-            </div>
-
-        </div>
-
-
-        <!-- OVERALL SCORE -->
-
-        <div class="score-card">
-
-            <div class="score-icon">
-                ⭐
-            </div>
-
-            <div class="score-label">
-                OVERALL CANDIDATE SCORE
-            </div>
-
-            <div class="score-value overall-value">
-                {{ overall_score }}%
-            </div>
-
-        </div>
-
-
-        <!-- CAREER -->
-
-        <div class="score-card">
-
-            <div class="score-icon">
-                💼
-            </div>
-
-            <div class="score-label">
-                RECOMMENDED CAREER
-            </div>
-
-            <div class="score-value career-value">
-                {{ career_recommendation }}
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- ================= MATCHED SKILLS ================= -->
-
-    <div class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-
-                <span>✅</span>
-
-                <div>
-
-                    <h2>
-                        Matched Skills
-                    </h2>
-
-                    <div class="section-description">
-                        Skills from your resume that match the job requirements.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {% if matched_job_skills %}
-
-        <div class="skills">
-
-            {% for skill in matched_job_skills %}
-
-            <span class="skill">
-                ✓ {{ skill }}
-            </span>
-
-            {% endfor %}
-
-        </div>
-
-        {% else %}
-
-        <p class="empty">
-            No required skills were matched.
-        </p>
-
-        {% endif %}
-
-    </div>
-
-
-    <!-- ================= MISSING SKILLS ================= -->
-
-    <div class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-
-                <span>❌</span>
-
-                <div>
-
-                    <h2>
-                        Missing Skills
-                    </h2>
-
-                    <div class="section-description">
-                        Skills required by the job but not detected in your resume.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {% if missing_skills %}
-
-        <div class="skills">
-
-            {% for skill in missing_skills %}
-
-            <span class="skill missing">
-                ✕ {{ skill }}
-            </span>
-
-            {% endfor %}
-
-        </div>
-
-        {% else %}
-
-        <p class="empty">
-            🎉 Excellent! No major required skills are missing.
-        </p>
-
-        {% endif %}
-
-    </div>
-
-
-    <!-- ================= FOUND SKILLS ================= -->
-
-    <div class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-
-                <span>🧠</span>
-
-                <div>
-
-                    <h2>
-                        Skills Detected in Resume
-                    </h2>
-
-                    <div class="section-description">
-                        Technical and professional skills identified from your resume.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {% if found_skills %}
-
-        <div class="skills">
-
-            {% for skill in found_skills %}
-
-            <span class="skill found">
-                ✓ {{ skill }}
-            </span>
-
-            {% endfor %}
-
-        </div>
-
-        {% else %}
-
-        <p class="empty">
-            No technical skills were detected.
-        </p>
-
-        {% endif %}
-
-    </div>
-
-
-    <!-- ================= AI INSIGHTS ================= -->
-
-    <div class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-
-                <span>🤖</span>
-
-                <div>
-
-                    <h2>
-                        AI Resume Insights
-                    </h2>
-
-                    <div class="section-description">
-                        Intelligent analysis of your resume strengths and improvement areas.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="insight-grid">
-
-
-            <!-- STRENGTHS -->
-
-            <div class="insight-box strength">
-
-                <h3>
-                    💪 Strengths
-                </h3>
-
-                {% if strengths %}
-
-                <ul>
-
-                    {% for strength in strengths %}
-
-                    <li>
-                        {{ strength }}
-                    </li>
-
-                    {% endfor %}
-
-                </ul>
-
-                {% else %}
-
-                <p class="empty">
-                    No strengths identified.
-                </p>
-
-                {% endif %}
-
-            </div>
-
-
-            <!-- WEAKNESSES -->
-
-            <div class="insight-box weakness">
-
-                <h3>
-                    ⚠️ Areas to Improve
-                </h3>
-
-                {% if weaknesses %}
-
-                <ul>
-
-                    {% for weakness in weaknesses %}
-
-                    <li>
-                        {{ weakness }}
-                    </li>
-
-                    {% endfor %}
-
-                </ul>
-
-                {% else %}
-
-                <p class="empty">
-                    No major weaknesses identified.
-                </p>
-
-                {% endif %}
-
-            </div>
-
-
-            <!-- AI INSIGHTS -->
-
-            <div class="insight-box ai">
-
-                <h3>
-                    💡 AI Insights
-                </h3>
-
-                {% if insights %}
-
-                <ul>
-
-                    {% for insight in insights %}
-
-                    <li>
-                        {{ insight }}
-                    </li>
-
-                    {% endfor %}
-
-                </ul>
-
-                {% else %}
-
-                <p class="empty">
-                    No additional insights available.
-                </p>
-
-                {% endif %}
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- ================= LEARNING RECOMMENDATIONS ================= -->
-
-    <div class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-
-                <span>📚</span>
-
-                <div>
-
-                    <h2>
-                        Learning Recommendations
-                    </h2>
-
-                    <div class="section-description">
-                        Recommended areas to strengthen your profile.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {% if learning_recommendations %}
-
-        <ul>
-
-            {% for recommendation in learning_recommendations %}
-
-            <li>
-                {{ recommendation }}
-            </li>
-
-            {% endfor %}
-
-        </ul>
-
-        {% else %}
-
-        <p class="empty">
-            No additional learning recommendations at this time.
-        </p>
-
-        {% endif %}
-
-    </div>
-
-
-    <!-- ================= IMPROVEMENT SUGGESTIONS ================= -->
-
-    <div class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-
-                <span>🚀</span>
-
-                <div>
-
-                    <h2>
-                        Resume Improvement Suggestions
-                    </h2>
-
-                    <div class="section-description">
-                        Practical suggestions to improve your resume and job compatibility.
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="improvement-box">
-
-            {% if improvement_suggestions %}
-
-            <ul>
-
-                {% for suggestion in improvement_suggestions %}
-
-                <li>
-                    {{ suggestion }}
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
-            {% else %}
-
-            <p class="empty">
-                🎉 Your resume looks good. No major improvements are required.
-            </p>
-
-            {% endif %}
-
-        </div>
-
-    </div>
-
-
-    <!-- ================= ACTION BUTTONS ================= -->
-
-    <div class="actions">
-
-        <a href="/" class="btn btn-blue">
-            🔄 Analyze Another Resume
-        </a>
-
-        <a href="/history" class="btn btn-green">
-            📋 View History
-        </a>
-
-        <a href="/dashboard" class="btn btn-dark">
-            📊 Dashboard
-        </a>
-
-        <a href="/ranking" class="btn btn-gold">
-            🏆 Candidate Ranking
-        </a>
-
-    </div>
-
-
-</div>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    AI Resume Analyzer | Smart Career Recommendation System
-
-</footer>
-
-
-</body>
-
-</html>
-```
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
