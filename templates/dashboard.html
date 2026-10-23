@@ -1,32 +1,15 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Resume Analytics Dashboard</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>AI Resume Analytics Dashboard</title>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-
->>>>>>> e315c9e2baa5322026f18d7cd5b00269b787a763
         * {
             box-sizing: border-box;
             margin: 0;
@@ -45,14 +28,7 @@
             margin: auto;
         }
 
-
-            max-width: 1200px;
-            margin: auto;
-        }
-
         /* Header */
-
-
         .header {
             background: #111827;
             color: white;
@@ -67,134 +43,81 @@
 
         .header p {
             color: #d1d5db;
-
             line-height: 1.6;
-
-
         }
 
         .buttons {
             margin-top: 20px;
-
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-
-
         }
 
         .btn {
             display: inline-block;
-
             padding: 11px 18px;
-
-            padding: 10px 18px;
-
             background: white;
             color: #111827;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-
         }
 
         .btn:hover {
             background: #e5e7eb;
         }
 
+        /* Statistics */
         .cards {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-
-            margin-right: 10px;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        /* Statistics */
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
             gap: 20px;
             margin-bottom: 25px;
         }
 
-        .card, .chart-card, .recent {
+        .card,
+        .chart-card,
+        .recent {
             background: white;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
             min-width: 0;
-
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-       }
+        }
 
         .card h3 {
             color: #6b7280;
-
-            font-size: 15px;
-
             font-size: 16px;
-
             margin-bottom: 12px;
         }
 
         .number {
             font-size: 32px;
             font-weight: bold;
-
             overflow-wrap: anywhere;
         }
 
+        /* Charts */
         .charts {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        }
-
-        /* Charts */
-
-        .charts {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-
             gap: 25px;
             margin-bottom: 25px;
         }
 
-
-        .chart-card h2, .recent h2 {
+        .chart-card h2,
+        .recent h2 {
             margin-bottom: 20px;
             font-size: 19px;
-
-        .chart-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .chart-card h2 {
-            margin-bottom: 20px;
-            font-size: 20px;
-
         }
 
         .chart-container {
             position: relative;
-
-            height: 330px;
+            height: 300px;
             width: 100%;
         }
 
+        /* Recent Analyses */
         .recent {
             overflow-x: auto;
         }
@@ -203,29 +126,6 @@
             width: 100%;
             min-width: 750px;
             border-collapse: collapse;
-
-            height: 350px;
-        }
-
-        /* Recent Analyses */
-
-        .recent {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            overflow-x: auto;
-        }
-
-        .recent h2 {
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
-
         }
 
         th {
@@ -233,38 +133,25 @@
             color: white;
             padding: 14px;
             text-align: left;
-
             white-space: nowrap;
-
-
         }
 
         td {
             padding: 14px;
             border-bottom: 1px solid #e5e7eb;
-
             overflow-wrap: anywhere;
         }
 
         tbody tr:hover {
-
-        }
-
-        tr:hover {
-
             background: #f9fafb;
         }
 
-        .score {
-            font-weight: bold;
-        }
-
+        .score,
         .career {
             font-weight: bold;
         }
 
         .empty {
-
             padding: 30px;
             text-align: center;
             color: #6b7280;
@@ -274,19 +161,14 @@
             color: #6b7280;
             font-size: 13px;
             margin-top: 12px;
-        }
-
-        @media (max-width: 900px) {
-
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
+            line-height: 1.6;
         }
 
         /* Responsive */
-
         @media (max-width: 900px) {
-
+            body {
+                padding: 15px;
+            }
 
             .cards {
                 grid-template-columns: 1fr;
@@ -295,33 +177,19 @@
             .charts {
                 grid-template-columns: 1fr;
             }
-
         }
 
         @media (max-width: 600px) {
-
-
-        }
-
-        @media (max-width: 600px) {
-
-
-            body {
-                padding: 15px;
-            }
-
-
-            .header, .card, .chart-card, .recent {
-
-            .header {
-
+            .header,
+            .card,
+            .chart-card,
+            .recent {
                 padding: 20px;
             }
 
             .chart-container {
                 height: 280px;
             }
-
 
             .number {
                 font-size: 28px;
@@ -333,8 +201,10 @@
 <body>
 <div class="container">
 
+    <!-- Header -->
     <header class="header">
         <h1>📊 AI Resume Analytics Dashboard</h1>
+
         <p>
             Resume screening, skill gap analysis and career recommendation analytics.
         </p>
@@ -346,26 +216,38 @@
         </div>
     </header>
 
+    <!-- Statistics -->
     <section class="cards">
+
         <div class="card">
             <h3>📄 Total Resumes</h3>
-            <div class="number">{{ total_resumes }}</div>
+            <div class="number">
+                {{ total_resumes|default(0, true) }}
+            </div>
         </div>
 
         <div class="card">
             <h3>🎯 Average Match Score</h3>
-            <div class="number">{{ average_match }}%</div>
+            <div class="number">
+                {{ average_match|default(0, true) }}%
+            </div>
         </div>
 
         <div class="card">
             <h3>🧩 Average Skill Gap</h3>
-            <div class="number">{{ average_skill_gap }}%</div>
+            <div class="number">
+                {{ average_gap|default(0, true) }}%
+            </div>
         </div>
+
     </section>
 
+    <!-- Interactive Charts -->
     <section class="charts">
+
         <div class="chart-card">
             <h2>📈 Match Score vs Skill Gap</h2>
+
             <div class="chart-container">
                 <canvas id="matchSkillChart"></canvas>
             </div>
@@ -373,16 +255,21 @@
 
         <div class="chart-card">
             <h2>🎯 Resume Match Performance</h2>
+
             <div class="chart-container">
                 <canvas id="matchChart"></canvas>
             </div>
         </div>
+
     </section>
 
+    <!-- Recent Analyses -->
     <section class="recent">
+
         <h2>📋 Recent Resume Analyses</h2>
 
-        {% if recent_analyses %}
+        {% if analyses %}
+
         <table>
             <thead>
                 <tr>
@@ -395,47 +282,58 @@
             </thead>
 
             <tbody>
-                {% for analysis in recent_analyses %}
+                {% for analysis in analyses %}
+
                 <tr>
-                    <td>📄 {{ analysis.get('resume_name', 'Unknown') }}</td>
+                    <td>
+                        📄 {{ analysis["resume_name"] or "Unknown" }}
+                    </td>
 
                     <td class="score">
-                        {{ "%.2f"|format(analysis.get('match_score') or 0) }}%
+                        {{ "%.2f"|format(analysis["match_score"] or 0) }}%
                     </td>
 
                     <td>
-                        {{ "%.2f"|format(analysis.get('skill_gap') or 0) }}%
+                        {{ "%.2f"|format(analysis["skill_gap"] or 0) }}%
                     </td>
 
                     <td class="career">
-                        {{ analysis.get('career_recommendation') or 'Not determined' }}
+                        {{ analysis["career_recommendation"] or "Not determined" }}
                     </td>
 
                     <td>
-                        {{ analysis.get('analysis_date') or 'N/A' }}
+                        {{ analysis["analysis_date"] or "N/A" }}
                     </td>
                 </tr>
+
                 {% endfor %}
             </tbody>
         </table>
+
         {% else %}
+
         <div class="empty">
             <h3>No Resume Analysis Found</h3>
-            <p>Upload and analyze a resume to populate the dashboard.</p>
+
+            <p>
+                Upload and analyze a resume to populate the dashboard.
+            </p>
         </div>
+
         {% endif %}
+
     </section>
 
     <p class="note">
-        Match scores are automated estimates based on the application's matching logic.
-        They do not guarantee candidate suitability or hiring outcomes.
+        Match scores are automated estimates based on the application's
+        matching logic. They do not guarantee candidate suitability or hiring outcomes.
     </p>
 
 </div>
 
+<!-- Chart JavaScript -->
 <script>
-    // Flask passes chart_data as a list of dictionaries.
-    const chartData = {{ chart_data | tojson }};
+    const chartData = {{ chart_data | default([], true) | tojson }};
 
     const resumeNames = chartData.map(
         item => item.resume_name || "Resume"
@@ -452,10 +350,12 @@
     const commonOptions = {
         responsive: true,
         maintainAspectRatio: false,
+
         scales: {
             y: {
                 beginAtZero: true,
                 max: 100,
+
                 title: {
                     display: true,
                     text: "Percentage (%)"
@@ -464,453 +364,66 @@
         }
     };
 
-    const matchSkillCanvas = document.getElementById("matchSkillChart");
-    const matchCanvas = document.getElementById("matchChart");
+    const matchSkillCanvas =
+        document.getElementById("matchSkillChart");
 
-    if (chartData.length > 0 && typeof Chart !== "undefined") {
-        new Chart(matchSkillCanvas, {
+    const matchCanvas =
+        document.getElementById("matchChart");
+
+    if (typeof Chart !== "undefined" && chartData.length > 0) {
+
+        // Match Score vs Skill Gap Chart
+        new Chart(matchSkillCanvas.getContext("2d"), {
             type: "bar",
+
             data: {
                 labels: resumeNames,
+
                 datasets: [
                     {
                         label: "Match Score (%)",
-                        data: matchScores
+                        data: matchScores,
+                        backgroundColor: "#60A5FA"
                     },
                     {
                         label: "Skill Gap (%)",
-                        data: skillGaps
+                        data: skillGaps,
+                        backgroundColor: "#F9A8D4"
                     }
                 ]
             },
+
             options: commonOptions
         });
 
-        new Chart(matchCanvas, {
+        // Resume Match Performance Chart
+        new Chart(matchCanvas.getContext("2d"), {
             type: "line",
+
             data: {
                 labels: resumeNames,
+
                 datasets: [
                     {
                         label: "Resume Match Score (%)",
                         data: matchScores,
+                        borderColor: "#2563EB",
+                        backgroundColor: "rgba(37, 99, 235, 0.12)",
                         tension: 0.3,
-                        fill: false
+                        fill: true
                     }
                 ]
             },
+
             options: commonOptions
         });
-    } else {
-        [matchSkillCanvas, matchCanvas].forEach(canvas => {
-            const context = canvas.getContext("2d");
-            context.font = "15px Arial";
-            context.fillStyle = "#6b7280";
-            context.textAlign = "center";
-            context.fillText(
-                "No chart data available",
-                canvas.width / 2,
-                canvas.height / 2
-            );
-        });
+
+    } else if (typeof Chart === "undefined") {
+        console.error(
+            "Chart.js did not load. Check your internet connection."
+        );
     }
 </script>
 
 </body>
-</html>
-```
-=======
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-<div class="container">
-
-
-    <!-- ============================== -->
-    <!-- Header -->
-    <!-- ============================== -->
-
-    <div class="header">
-
-        <h1>📊 AI Resume Analytics Dashboard</h1>
-
-        <p>
-            AI-powered resume screening, skill gap analysis
-            and career recommendation analytics.
-        </p>
-
-        <div class="buttons">
-
-            <a href="/" class="btn">
-                ➕ Analyze New Resume
-            </a>
-
-            <a href="/history" class="btn">
-                📋 Resume History
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <!-- ============================== -->
-    <!-- Statistics Cards -->
-    <!-- ============================== -->
-
-    <div class="cards">
-
-
-        <div class="card">
-
-            <h3>📄 Total Resumes</h3>
-
-            <div class="number">
-                {{ total_resumes }}
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>🎯 Average Match Score</h3>
-
-            <div class="number">
-                {{ average_match }}%
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>🧩 Average Skill Gap</h3>
-
-            <div class="number">
-                {{ average_skill_gap }}%
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- ============================== -->
-    <!-- Interactive Charts -->
-    <!-- ============================== -->
-
-    <div class="charts">
-
-
-        <!-- Match vs Skill Gap -->
-
-        <div class="chart-card">
-
-            <h2>📈 Match Score vs Skill Gap</h2>
-
-            <div class="chart-container">
-
-                <canvas id="matchSkillChart"></canvas>
-
-            </div>
-
-        </div>
-
-
-        <!-- Match Score Chart -->
-
-        <div class="chart-card">
-
-            <h2>🎯 Resume Match Performance</h2>
-
-            <div class="chart-container">
-
-                <canvas id="matchChart"></canvas>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- ============================== -->
-    <!-- Recent Analyses -->
-    <!-- ============================== -->
-
-    <div class="recent">
-
-        <h2>📋 Recent Resume Analyses</h2>
-
-
-        {% if recent_analyses %}
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Resume</th>
-
-                    <th>Match Score</th>
-
-                    <th>Skill Gap</th>
-
-                    <th>Career Recommendation</th>
-
-                    <th>Date</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                {% for analysis in recent_analyses %}
-
-                <tr>
-
-                    <td>
-                        📄 {{ analysis[0] }}
-                    </td>
-
-                    <td class="score">
-                        {{ analysis[1] }}%
-                    </td>
-
-                    <td>
-                        {{ analysis[2] }}%
-                    </td>
-
-                    <td class="career">
-                        {{ analysis[3] }}
-                    </td>
-
-                    <td>
-                        {{ analysis[4] }}
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
-
-        {% else %}
-
-        <div class="empty">
-
-            <h3>No Resume Analysis Found</h3>
-
-            <p>
-                Analyze a resume to see dashboard statistics.
-            </p>
-
-        </div>
-
-        {% endif %}
-
-
-    </div>
-
-
-</div>
-
-
-<!-- ============================== -->
-<!-- Chart JavaScript -->
-<!-- ============================== -->
-
-<script>
-
-    // Get chart data from Flask
-
-    const chartData = {{ chart_data | tojson }};
-
-
-    // Extract data
-
-    const resumeNames = chartData.map(
-        item => item[0]
-    );
-
-    const matchScores = chartData.map(
-        item => item[1]
-    );
-
-    const skillGaps = chartData.map(
-        item => item[2]
-    );
-
-
-    // ==============================
-    // Match vs Skill Gap Chart
-    // ==============================
-
-    const matchSkillContext =
-        document
-        .getElementById("matchSkillChart")
-        .getContext("2d");
-
-
-    new Chart(matchSkillContext, {
-
-        type: "bar",
-
-        data: {
-
-            labels: resumeNames,
-
-            datasets: [
-
-                {
-                    label: "Match Score (%)",
-                    data: matchScores
-                },
-
-                {
-                    label: "Skill Gap (%)",
-                    data: skillGaps
-                }
-
-            ]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            scales: {
-
-                y: {
-
-                    beginAtZero: true,
-
-                    max: 100,
-
-                    title: {
-
-                        display: true,
-
-                        text: "Percentage (%)"
-
-                    }
-
-                }
-
-            },
-
-            plugins: {
-
-                legend: {
-
-                    position: "top"
-
-                }
-
-            }
-
-        }
-
-    });
-
-
-    // ==============================
-    // Match Score Line Chart
-    // ==============================
-
-    const matchContext =
-        document
-        .getElementById("matchChart")
-        .getContext("2d");
-
-
-    new Chart(matchContext, {
-
-        type: "line",
-
-        data: {
-
-            labels: resumeNames,
-
-            datasets: [
-
-                {
-
-                    label: "Resume Match Score (%)",
-
-                    data: matchScores,
-
-                    tension: 0.3,
-
-                    fill: false
-
-                }
-
-            ]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            scales: {
-
-                y: {
-
-                    beginAtZero: true,
-
-                    max: 100,
-
-                    title: {
-
-                        display: true,
-
-                        text: "Match Score (%)"
-
-                    }
-
-                }
-
-            },
-
-            plugins: {
-
-                legend: {
-
-                    position: "top"
-
-                }
-
-            }
-
-        }
-
-    });
-
-</script>
-
-
-</body>
-
 </html>

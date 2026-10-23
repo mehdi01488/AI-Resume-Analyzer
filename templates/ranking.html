@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -116,13 +117,15 @@
             font-size: 30px;
             font-weight: bold;
             color: #2563eb;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .candidate-career {
             color: #059669;
             font-weight: bold;
             margin-bottom: 12px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
         .candidate-info {
@@ -144,6 +147,42 @@
             border: 2px solid #d97706;
         }
 
+        /* ================= CAREER RECOMMENDATIONS ================= */
+
+        .career-heading {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 7px;
+        }
+
+        .career-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .career-item {
+            display: inline-block;
+            background: #ecfdf5;
+            color: #047857;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+            max-width: 100%;
+        }
+
+        .career-unavailable {
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
         /* ================= TABLE ================= */
 
         .table-section {
@@ -162,7 +201,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 900px;
+            min-width: 950px;
         }
 
         th {
@@ -177,6 +216,7 @@
             padding: 15px 12px;
             border-bottom: 1px solid #e5e7eb;
             font-size: 14px;
+            vertical-align: top;
         }
 
         tr:hover {
@@ -208,11 +248,15 @@
         }
 
         .career-badge {
+            display: inline-block;
             background: #ecfdf5;
             color: #047857;
             padding: 6px 10px;
-            border-radius: 20px;
+            border-radius: 8px;
             font-weight: 600;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+            max-width: 220px;
         }
 
         /* ================= EMPTY ================= */
@@ -249,6 +293,10 @@
             font-weight: bold;
         }
 
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
         /* ================= FOOTER ================= */
 
         footer {
@@ -272,6 +320,7 @@
             .nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
+                gap: 15px;
             }
 
             .podium {
@@ -288,9 +337,7 @@
 
 </head>
 
-
 <body>
-
 
 <!-- ================= NAVBAR ================= -->
 
@@ -302,37 +349,25 @@
 
     <div class="nav-links">
 
-        <a href="/">
-            Home
-        </a>
+        <a href="/">Home</a>
 
-        <a href="/history">
-            History
-        </a>
+        <a href="/history">History</a>
 
-        <a href="/dashboard">
-            Dashboard
-        </a>
+        <a href="/dashboard">Dashboard</a>
 
-        <a href="/ranking" class="active">
-            🏆 Ranking
-        </a>
+        <a href="/ranking" class="active">🏆 Ranking</a>
 
     </div>
 
 </nav>
 
-
 <!-- ================= MAIN ================= -->
 
 <div class="container">
 
-
     <div class="header">
 
-        <h1>
-            🏆 Candidate Ranking
-        </h1>
+        <h1>🏆 Candidate Ranking</h1>
 
         <p>
             Candidates ranked automatically based on Overall Candidate Score.
@@ -340,17 +375,13 @@
 
     </div>
 
-
     {% if candidates %}
-
 
     <!-- ================= TOP 3 ================= -->
 
     <div class="podium">
 
-
         {% for candidate in candidates[:3] %}
-
 
         <div class="candidate-card
             {% if candidate.rank == 1 %}
@@ -361,7 +392,6 @@
                 third
             {% endif %}
         ">
-
 
             <div class="rank-icon">
 
@@ -375,34 +405,64 @@
 
             </div>
 
-
             <h2>
-                {{ candidate.resume_name }}
+                {{ candidate.resume_name or 'Unknown Candidate' }}
             </h2>
 
-
             <div class="candidate-score">
-                {{ candidate.overall_score }}%
+                {{ candidate.overall_score or 0 }}%
             </div>
 
+            <div class="career-heading">
+                Recommended Careers
+            </div>
 
             <div class="candidate-career">
-                {{ candidate.career }}
-            </div>
 
+                {% if candidate.career_recommendations %}
+
+                    {% for career in candidate.career_recommendations %}
+
+                        <div>{{ career }}</div>
+
+                    {% endfor %}
+
+                {% elif candidate.career_recommendation %}
+
+                    {% for career in candidate.career_recommendation.replace('|', ',').split(',') %}
+
+                        {% if career.strip() %}
+                            <div>{{ career.strip() }}</div>
+                        {% endif %}
+
+                    {% endfor %}
+
+                {% elif candidate.career %}
+
+                    {{ candidate.career }}
+
+                {% else %}
+
+                    <span class="career-unavailable">
+                        Career recommendation unavailable
+                    </span>
+
+                {% endif %}
+
+            </div>
 
             <div class="candidate-info">
 
                 AI Match:
                 <strong>
-                    {{ candidate.match_score }}%
+                    {{ candidate.match_score or 0 }}%
                 </strong>
 
                 <br>
 
                 Skill Gap:
                 <strong>
-                    {{ candidate.skill_gap }}%
+                    {{ candidate.skill_gap or 0 }}%
                 </strong>
 
                 <br>
@@ -414,24 +474,17 @@
 
             </div>
 
-
         </div>
-
 
         {% endfor %}
 
-
     </div>
-
 
     <!-- ================= ALL CANDIDATES ================= -->
 
     <div class="table-section">
 
-        <h2>
-            📊 All Candidates
-        </h2>
-
+        <h2>📊 All Candidates</h2>
 
         <table>
 
@@ -439,125 +492,123 @@
 
                 <tr>
 
-                    <th>
-                        Rank
-                    </th>
+                    <th>Rank</th>
 
-                    <th>
-                        Resume / Candidate
-                    </th>
+                    <th>Resume / Candidate</th>
 
-                    <th>
-                        Overall Score
-                    </th>
+                    <th>Overall Score</th>
 
-                    <th>
-                        AI Match Score
-                    </th>
+                    <th>AI Match Score</th>
 
-                    <th>
-                        Skill Gap
-                    </th>
+                    <th>Skill Gap</th>
 
-                    <th>
-                        Recommended Career
-                    </th>
+                    <th>Recommended Careers</th>
 
-                    <th>
-                        Analysis Date
-                    </th>
+                    <th>Analysis Date</th>
 
                 </tr>
 
             </thead>
 
-
             <tbody>
 
-
                 {% for candidate in candidates %}
-
 
                 <tr>
 
                     <td>
 
                         {% if candidate.rank == 1 %}
-
                             🥇
-
                         {% elif candidate.rank == 2 %}
-
                             🥈
-
                         {% elif candidate.rank == 3 %}
-
                             🥉
+                        {% else %}
+                            <span class="rank-number">
+                                #{{ candidate.rank }}
+                            </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ candidate.resume_name or 'Unknown Candidate' }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        <span class="score-badge">
+                            {{ candidate.overall_score or 0 }}%
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="match-badge">
+                            {{ candidate.match_score or 0 }}%
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="gap-badge">
+                            {{ candidate.skill_gap or 0 }}%
+                        </span>
+                    </td>
+
+                    <td>
+
+                        {% if candidate.career_recommendations %}
+
+                            {% for career in candidate.career_recommendations %}
+
+                                <div style="margin-bottom: 8px;">
+                                    <span class="career-badge">
+                                        {{ career }}
+                                    </span>
+                                </div>
+
+                            {% endfor %}
+
+                        {% elif candidate.career_recommendation %}
+
+                            {% for career in candidate.career_recommendation.replace('|', ',').split(',') %}
+
+                                {% if career.strip() %}
+
+                                    <div style="margin-bottom: 8px;">
+                                        <span class="career-badge">
+                                            {{ career.strip() }}
+                                        </span>
+                                    </div>
+
+                                {% endif %}
+
+                            {% endfor %}
+
+                        {% elif candidate.career %}
+
+                            <span class="career-badge">
+                                {{ candidate.career }}
+                            </span>
 
                         {% else %}
 
-                            <span class="rank-number">
-                                #{{ candidate.rank }}
+                            <span class="career-unavailable">
+                                Not available
                             </span>
 
                         {% endif %}
 
                     </td>
 
-
                     <td>
-                        <strong>
-                            {{ candidate.resume_name }}
-                        </strong>
+                        {{ candidate.analysis_date or 'N/A' }}
                     </td>
-
-
-                    <td>
-
-                        <span class="score-badge">
-                            {{ candidate.overall_score }}%
-                        </span>
-
-                    </td>
-
-
-                    <td>
-
-                        <span class="match-badge">
-                            {{ candidate.match_score }}%
-                        </span>
-
-                    </td>
-
-
-                    <td>
-
-                        <span class="gap-badge">
-                            {{ candidate.skill_gap }}%
-                        </span>
-
-                    </td>
-
-
-                    <td>
-
-                        <span class="career-badge">
-                            {{ candidate.career }}
-                        </span>
-
-                    </td>
-
-
-                    <td>
-                        {{ candidate.analysis_date }}
-                    </td>
-
 
                 </tr>
 
-
                 {% endfor %}
-
 
             </tbody>
 
@@ -565,21 +616,15 @@
 
     </div>
 
-
     {% else %}
-
 
     <!-- ================= EMPTY STATE ================= -->
 
     <div class="empty">
 
-        <div class="empty-icon">
-            📄
-        </div>
+        <div class="empty-icon">📄</div>
 
-        <h2>
-            No Candidates Yet
-        </h2>
+        <h2>No Candidates Yet</h2>
 
         <p>
             Analyze some resumes first. Candidates will automatically appear here.
@@ -591,21 +636,15 @@
 
     </div>
 
-
     {% endif %}
 
-
 </div>
-
 
 <!-- ================= FOOTER ================= -->
 
 <footer>
-
     AI Resume Analyzer | Smart Career Recommendation System
-
 </footer>
-
 
 </body>
 

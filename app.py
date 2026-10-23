@@ -845,15 +845,10 @@ def get_analysis_by_id(analysis_id):
         ).fetchone()
 
 
+
 def safe_render(template, **context):
-    try:
-        return render_template(template, **context)
-    except Exception as error:
-        app.logger.exception("Template rendering error: %s", error)
-        return (
-            f"Template error: {template}. "
-            "Check that the template file exists in the templates folder."
-        ), 500
+    return render_template(template, **context)
+
 
 
 # =========================================================
@@ -1056,17 +1051,28 @@ def candidate_details(analysis_id):
 # DASHBOARD
 # =========================================================
 
+
 @app.route("/dashboard")
 def dashboard():
     analyses = get_recent_analyses(10000)
 
     total_candidates = len(analyses)
+
     average_match = (
-        round(sum(float(row["match_score"] or 0) for row in analyses) / total_candidates, 2)
+        round(
+            sum(float(row["match_score"] or 0) for row in analyses)
+            / total_candidates,
+            2
+        )
         if total_candidates else 0
     )
+
     average_gap = (
-        round(sum(float(row["skill_gap"] or 0) for row in analyses) / total_candidates, 2)
+        round(
+            sum(float(row["skill_gap"] or 0) for row in analyses)
+            / total_candidates,
+            2
+        )
         if total_candidates else 0
     )
 
@@ -1077,6 +1083,16 @@ def dashboard():
 
     career_labels = list(career_counts.keys())
     career_values = list(career_counts.values())
+
+    # Prepare JSON-safe chart data
+    chart_data = [
+        {
+            "resume_name": row["resume_name"] or "Unknown",
+            "match_score": float(row["match_score"] or 0),
+            "skill_gap": float(row["skill_gap"] or 0)
+        }
+        for row in analyses[:10]
+    ]
 
     return safe_render(
         "dashboard.html",
@@ -1089,8 +1105,11 @@ def dashboard():
         avg_skill_gap=average_gap,
         career_labels=career_labels,
         career_values=career_values,
-        career_counts=dict(career_counts)
+        career_counts=dict(career_counts),
+        chart_data=chart_data
     )
+
+
 
 
 # =========================================================
@@ -1110,13 +1129,31 @@ def ranking():
         reverse=True
     )
 
+    for candidate in ranked_candidates:
+        # Get existing career recommendation
+        career = candidate["career_recommendation"] or ""
+
+        # Convert recommendation into a list
+        if isinstance(career, str):
+            career_recommendations = [
+                item.strip()
+                for item in career.replace("|", ",").split(",")
+                if item.strip()
+            ]
+        else:
+            career_recommendations = []
+
+        # Pass career recommendations to HTML
+        candidate["career_recommendations"] = (
+            career_recommendations[:2]
+        )
+
     return safe_render(
         "ranking.html",
         candidates=ranked_candidates,
         ranked_candidates=ranked_candidates,
         analyses=ranked_candidates
     )
-
 
 # =========================================================
 # ADMIN / DELETE
