@@ -1,606 +1,324 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidate Profile - AI Resume Analyzer</title>
 
-
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-
         body {
-
             font-family: Arial, sans-serif;
-
             background: #f4f7fb;
-
             color: #172033;
-
         }
-
-
-        /* Navbar */
 
         nav {
-
             background: #111827;
-
             padding: 18px 40px;
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
         }
-
 
         nav h2 {
-
             color: white;
-
             font-size: 22px;
-
         }
-
 
         nav a {
-
             color: #dbeafe;
-
             text-decoration: none;
-
             margin-left: 25px;
-
             font-size: 15px;
-
         }
-
 
         nav a:hover {
-
             color: #60a5fa;
-
         }
-
-
-        /* Container */
 
         .container {
-
             width: 94%;
-
             max-width: 1100px;
-
             margin: 35px auto;
-
         }
-
 
         .back {
-
             display: inline-block;
-
             margin-bottom: 20px;
-
             color: #2563eb;
-
             text-decoration: none;
-
             font-weight: bold;
-
         }
 
+        .header, .score-card, .section {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
 
         .header {
-
-            background: white;
-
             padding: 30px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.08);
-
             margin-bottom: 25px;
-
         }
-
 
         .header h1 {
-
-            margin-bottom: 10px;
-
+            margin-bottom: 15px;
         }
-
 
         .header p {
-
             color: #64748b;
-
+            margin-top: 8px;
         }
-
-
-        /* Score Cards */
 
         .scores {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
+            grid-template-columns: repeat(4, 1fr);
             gap: 18px;
-
             margin-bottom: 25px;
-
         }
-
 
         .score-card {
-
-            background: white;
-
             padding: 25px;
-
-            border-radius: 14px;
-
             text-align: center;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.08);
-
         }
-
 
         .score-card h3 {
-
             color: #64748b;
-
             font-size: 14px;
-
             margin-bottom: 12px;
-
         }
-
 
         .score-number {
-
             font-size: 28px;
-
             font-weight: bold;
-
             color: #2563eb;
-
         }
-
 
         .rank {
-
             color: #d97706;
-
         }
-
-
-        /* Sections */
 
         .section {
-
-            background: white;
-
             padding: 28px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.08);
-
             margin-bottom: 25px;
-
         }
-
 
         .section h2 {
-
             margin-bottom: 20px;
-
         }
-
 
         .career {
-
             display: inline-block;
-
             background: #ecfdf5;
-
             color: #059669;
-
             padding: 10px 16px;
-
             border-radius: 20px;
-
             font-weight: bold;
-
+            margin: 0 8px 8px 0;
         }
-
-
-        /* Skills */
 
         .skills {
-
             display: flex;
-
             flex-wrap: wrap;
-
             gap: 10px;
-
         }
 
+        .skill, .missing {
+            padding: 9px 13px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
 
         .skill {
-
             background: #eff6ff;
-
             color: #2563eb;
-
-            padding: 9px 13px;
-
-            border-radius: 20px;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
         }
-
 
         .missing {
-
             background: #fef2f2;
-
             color: #dc2626;
-
-            padding: 9px 13px;
-
-            border-radius: 20px;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
         }
-
 
         .empty {
-
             color: #64748b;
-
         }
-
-
-        /* Footer */
 
         footer {
-
             text-align: center;
-
             padding: 30px;
-
             color: #64748b;
-
             font-size: 14px;
-
         }
-
-
-        /* Responsive */
 
         @media (max-width: 900px) {
-
             .scores {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
+                grid-template-columns: repeat(2, 1fr);
             }
-
         }
-
 
         @media (max-width: 650px) {
-
             nav {
-
                 flex-direction: column;
-
                 gap: 15px;
-
                 padding: 18px;
-
             }
 
+            nav div {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
 
             nav a {
-
-                margin: 0 8px;
-
+                margin: 0;
             }
-
 
             .scores {
-
                 grid-template-columns: 1fr;
-
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+{% set c = candidate if candidate else (record if record else analysis) %}
 
-<!-- Navbar -->
+{% set resume = c['resume_name'] if 'resume_name' in c.keys() else 'Unknown Resume' %}
+{% set date = c['analysis_date'] if 'analysis_date' in c.keys() else 'Not available' %}
+{% set match = c['match_score'] if 'match_score' in c.keys() else 0 %}
+{% set overall = c['overall_score'] if 'overall_score' in c.keys() and c['overall_score'] is not none else match %}
+{% set gap = c['skill_gap'] if 'skill_gap' in c.keys() else 0 %}
+{% set career_value = c['career_recommendation'] if 'career_recommendation' in c.keys() else (c['career'] if 'career' in c.keys() else '') %}
+{% set matched = c['matched_skills'] if 'matched_skills' in c.keys() else '' %}
+{% set missing = c['missing_skills'] if 'missing_skills' in c.keys() else '' %}
+
+{% set match = match if match is not none else 0 %}
+{% set overall = overall if overall is not none else 0 %}
+{% set gap = gap if gap is not none else 0 %}
+
+{% set ns = namespace(rank=0) %}
+
+{% for row in ranked_candidates|default([]) %}
+    {% if row['id'] == c['id'] %}
+        {% set ns.rank = loop.index %}
+    {% endif %}
+{% endfor %}
+
+{% if ns.rank == 0 %}
+    {% set ns.rank = c['rank'] if 'rank' in c.keys() and c['rank'] else 'N/A' %}
+{% endif %}
+
+{% set career_list = career_value.replace('|', ',').replace(';', ',').split(',') if career_value else [] %}
 
 <nav>
-
     <h2>🤖 AI Resume Analyzer</h2>
-
     <div>
-
         <a href="/">Home</a>
-
         <a href="/history">History</a>
-
         <a href="/dashboard">Dashboard</a>
-
         <a href="/ranking">🏆 Ranking</a>
-
         <a href="/admin">Admin</a>
-
     </div>
-
 </nav>
-
-
 
 <div class="container">
 
-
-    <a
-        href="/admin"
-        class="back"
-    >
-
-        ← Back to Admin Panel
-
-    </a>
-
-
-
-    <!-- Candidate Header -->
+    <a href="/admin" class="back">← Back to Admin Panel</a>
 
     <div class="header">
-
-        <h1>
-            👤 Candidate Profile
-        </h1>
-
-        <p>
-            Resume:
-            <strong>
-                {{ resume_name }}
-            </strong>
-        </p>
-
-        <p>
-            Analysis Date:
-            {{ analysis_date }}
-        </p>
-
+        <h1>👤 Candidate Profile</h1>
+        <p>Resume: <strong>{{ resume }}</strong></p>
+        <p>Analysis Date: {{ date }}</p>
     </div>
-
-
-
-    <!-- Score Cards -->
 
     <div class="scores">
 
-
         <div class="score-card">
-
-            <h3>
-                🤖 AI Match Score
-            </h3>
-
-            <div class="score-number">
-
-                {{ match_score }}%
-
-            </div>
-
+            <h3>🤖 AI Match Score</h3>
+            <div class="score-number">{{ match }}%</div>
         </div>
 
-
-
         <div class="score-card">
-
-            <h3>
-                🎯 Overall Score
-            </h3>
-
-            <div class="score-number">
-
-                {{ overall_score }}%
-
-            </div>
-
+            <h3>🎯 Overall Score</h3>
+            <div class="score-number">{{ overall }}%</div>
         </div>
 
-
-
         <div class="score-card">
-
-            <h3>
-                📉 Skill Gap
-            </h3>
-
-            <div class="score-number">
-
-                {{ skill_gap }}%
-
-            </div>
-
+            <h3>📉 Skill Gap</h3>
+            <div class="score-number">{{ gap }}%</div>
         </div>
 
-
-
         <div class="score-card">
-
-            <h3>
-                🏆 Candidate Rank
-            </h3>
-
-            <div class="score-number rank">
-
-                #{{ candidate_rank }}
-
-            </div>
-
+            <h3>🏆 Candidate Rank</h3>
+            <div class="score-number rank">#{{ ns.rank }}</div>
         </div>
-
 
     </div>
 
-
-
-    <!-- Career -->
-
     <div class="section">
+        <h2>💼 Recommended Career</h2>
 
-        <h2>
-            💼 Recommended Career
-        </h2>
-
-        <span class="career">
-
-            {{ career }}
-
-        </span>
-
-    </div>
-
-
-
-    <!-- Matched Skills -->
-
-    <div class="section">
-
-        <h2>
-            ✅ Matched Skills
-        </h2>
-
-
-        {% if matched_skills %}
-
-            <div class="skills">
-
-                {% for skill in matched_skills.split(", ") %}
-
-                    <span class="skill">
-
-                        {{ skill }}
-
-                    </span>
-
-                {% endfor %}
-
-            </div>
-
+        {% if career_list and career_list[0].strip() %}
+            {% for career_item in career_list %}
+                {% if career_item.strip() %}
+                    <span class="career">{{ career_item.strip() }}</span>
+                {% endif %}
+            {% endfor %}
         {% else %}
-
-            <p class="empty">
-                No matched skills found.
-            </p>
-
+            <p class="empty">No career recommendation is saved for this analysis.</p>
         {% endif %}
-
     </div>
-
-
-
-    <!-- Missing Skills -->
 
     <div class="section">
+        <h2>✅ Matched Skills</h2>
 
-        <h2>
-            ⚠️ Missing Skills
-        </h2>
-
-
-        {% if missing_skills %}
-
+        {% if matched %}
             <div class="skills">
-
-                {% for skill in missing_skills.split(", ") %}
-
-                    <span class="missing">
-
-                        {{ skill }}
-
-                    </span>
-
+                {% for skill in matched.replace('|', ',').replace(';', ',').split(',') %}
+                    {% if skill.strip() %}
+                        <span class="skill">{{ skill.strip() }}</span>
+                    {% endif %}
                 {% endfor %}
-
             </div>
-
         {% else %}
-
-            <p class="empty">
-                No major missing skills.
-            </p>
-
+            <p class="empty">No matched skills found in this database record.</p>
         {% endif %}
-
     </div>
 
+    <div class="section">
+        <h2>⚠️ Missing Skills</h2>
 
+        {% if missing %}
+            <div class="skills">
+                {% for skill in missing.replace('|', ',').replace(';', ',').split(',') %}
+                    {% if skill.strip() %}
+                        <span class="missing">{{ skill.strip() }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty">No major missing skills recorded.</p>
+        {% endif %}
+    </div>
 
 </div>
 
-
-
 <footer>
-
     AI Resume Screening & Job Matching System
-
     <br>
-
     Candidate Profile Module
-
 </footer>
 
-
 </body>
-
 </html>

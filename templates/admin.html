@@ -584,11 +584,23 @@
                         </td>
 
 
-                        <td class="career">
+                        
+<td class="career">
+    {% set career_text = candidate.top_careers or candidate.career_recommendation or '' %}
+    {% set career_list = career_text.replace('|', ',').split(',') %}
 
-                            {{ candidate.recommended_career }}
+    {% for career in career_list[:2] %}
+        {% set career_name = career.split(' (')[0].strip() %}
+        {% if career_name %}
+            <div>{{ loop.index }}. {{ career_name }}</div>
+        {% endif %}
+    {% endfor %}
+</td>
 
-                        </td>
+
+                            
+
+                    
 
 
                         <!-- ================= ACTIONS ================= -->

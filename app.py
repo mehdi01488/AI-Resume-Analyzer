@@ -1030,6 +1030,7 @@ def history():
     )
 
 
+
 @app.route("/candidate/<int:analysis_id>")
 @app.route("/candidate_details/<int:analysis_id>")
 def candidate_details(analysis_id):
@@ -1039,11 +1040,110 @@ def candidate_details(analysis_id):
         flash("Analysis record not found.")
         return redirect(url_for("history"))
 
+    # Convert database records into dictionaries
+    analyses = get_recent_analyses(10000)
+    ranked_candidates = []
+
+    for row in analyses:
+        item = dict(row)
+
+        try:
+            match_score = float(item.get("match_score") or 0)
+        except (ValueError, TypeError):
+            match_score = 0.0
+
+        try:
+            skill_gap = float(item.get("skill_gap") or 0)
+        except (ValueError, TypeError):
+            skill_gap = 0.0
+
+        # Always calculate the score using the same formula
+        item["match_score"] = round(match_score, 2)
+        item["skill_gap"] = round(skill_gap, 2)
+        item["overall_score"] = calculate_overall_score(
+            match_score, skill_gap
+        )
+
+        ranked_candidates.append(item)
+
+    # Sort candidates by Overall Score
+    ranked_candidates.sort(
+        key=lambda item: (
+            item["overall_score"],
+            item["match_score"]
+        ),
+        reverse=True
+    )
+
+    # Prepare the selected candidate
+    candidate = dict(record)
+
+    try:
+        match_score = float(candidate.get("match_score") or 0)
+    except (ValueError, TypeError):
+        match_score = 0.0
+
+    try:
+        skill_gap = float(candidate.get("skill_gap") or 0)
+    except (ValueError, TypeError):
+        skill_gap = 0.0
+
+    candidate["match_score"] = round(match_score, 2)
+    candidate["skill_gap"] = round(skill_gap, 2)
+    candidate["overall_score"] = calculate_overall_score(
+        match_score, skill_gap
+    )
+
+    # Extract up to two career recommendations
+    career_text = (
+        candidate.get("top_careers")
+        or candidate.get("career_recommendation")
+        or ""
+    )
+
+    career_recommendations = []
+
+    if isinstance(career_text, str):
+        for item in career_text.replace("|", ",").split(","):
+            item = item.strip()
+
+            if not item:
+                continue
+
+            # Remove stored score, e.g. Data Analyst (20 points)
+            if " (" in item and item.endswith(" points)"):
+                item = item.rsplit(" (", 1)[0].strip()
+
+            if item and item.lower() not in [
+                career.lower() for career in career_recommendations
+            ]:
+                career_recommendations.append(item)
+
+    candidate["career_recommendations"] = career_recommendations[:2]
+
+    # Find candidate rank using the same Overall Score formula
+    candidate_rank = next(
+        (
+            index
+            for index, item in enumerate(ranked_candidates, start=1)
+            if str(item.get("id")) == str(candidate.get("id"))
+        ),
+        "N/A"
+    )
+
+    print("DEBUG CANDIDATE ID:", candidate.get("id"))
+    print("DEBUG OVERALL SCORE:", candidate["overall_score"])
+    print("DEBUG MATCH SCORE:", candidate["match_score"])
+    print("DEBUG SKILL GAP:", candidate["skill_gap"])
+    print("DEBUG CAREERS:", candidate["career_recommendations"])
+
     return safe_render(
         "candidate_details.html",
-        candidate=record,
-        analysis=record,
-        record=record
+        candidate=candidate,
+        analysis=candidate,
+        record=candidate,
+        candidate_rank=candidate_rank,
+        ranked_candidates=ranked_candidates
     )
 
 
@@ -1111,42 +1211,83 @@ def dashboard():
 
 
 
-
 # =========================================================
 # CANDIDATE RANKING
 # =========================================================
+
+
 
 @app.route("/ranking")
 def ranking():
     analyses = get_recent_analyses(10000)
 
-    ranked_candidates = sorted(
-        analyses,
+    # Convert SQLite rows into dictionaries
+    ranked_candidates = [dict(row) for row in analyses]
+
+    # Calculate scores and prepare career recommendations
+    for candidate in ranked_candidates:
+
+        try:
+            match_score = float(candidate.get("match_score") or 0)
+        except (ValueError, TypeError):
+            match_score = 0.0
+
+        try:
+            skill_gap = float(candidate.get("skill_gap") or 0)
+        except (ValueError, TypeError):
+            skill_gap = 0.0
+
+        # Recalculate overall score
+        candidate["overall_score"] = calculate_overall_score(
+            match_score,
+            skill_gap
+        )
+
+        candidate["match_score"] = round(match_score, 2)
+        candidate["skill_gap"] = round(skill_gap, 2)
+
+        # Read saved career recommendations
+        career = (
+            candidate.get("top_careers")
+            or candidate.get("career_recommendation")
+            or candidate.get("career")
+            or ""
+        )
+
+        recommendations = []
+
+        if isinstance(career, str):
+            for item in career.replace("|", ",").split(","):
+                item = item.strip()
+
+                if not item:
+                    continue
+
+                # Remove score details
+                if " (" in item and item.endswith(" points)"):
+                    item = item.rsplit(" (", 1)[0].strip()
+
+                # Avoid duplicate careers
+                if item and item.lower() not in [
+                    existing.lower()
+                    for existing in recommendations
+                ]:
+                    recommendations.append(item)
+
+        candidate["career_recommendations"] = recommendations[:2]
+
+    # Sort by overall score, then AI match score
+    ranked_candidates.sort(
         key=lambda row: (
-            float(row["overall_score"] or 0),
-            float(row["match_score"] or 0)
+            row["overall_score"],
+            row["match_score"]
         ),
         reverse=True
     )
 
-    for candidate in ranked_candidates:
-        # Get existing career recommendation
-        career = candidate["career_recommendation"] or ""
-
-        # Convert recommendation into a list
-        if isinstance(career, str):
-            career_recommendations = [
-                item.strip()
-                for item in career.replace("|", ",").split(",")
-                if item.strip()
-            ]
-        else:
-            career_recommendations = []
-
-        # Pass career recommendations to HTML
-        candidate["career_recommendations"] = (
-            career_recommendations[:2]
-        )
+    # Assign ranks after sorting
+    for rank, candidate in enumerate(ranked_candidates, start=1):
+        candidate["rank"] = rank
 
     return safe_render(
         "ranking.html",
@@ -1154,6 +1295,8 @@ def ranking():
         ranked_candidates=ranked_candidates,
         analyses=ranked_candidates
     )
+
+
 
 # =========================================================
 # ADMIN / DELETE
@@ -1219,6 +1362,7 @@ def admin():
 
 
 
+
 @app.route("/delete/<int:analysis_id>", methods=["POST", "GET"])
 def delete_analysis(analysis_id):
     with get_connection() as connection:
@@ -1228,7 +1372,8 @@ def delete_analysis(analysis_id):
         )
 
     flash("Analysis record deleted.")
-    return redirect(url_for("history"))
+    return redirect(url_for("admin"))
+
 
 
 # =========================================================
